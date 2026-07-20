@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEON Tapes — Wireframe Prototype</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#eee; color:#333; line-height:1.5; }
+
+  /* Top info bar */
+  #chrome {
+    position:sticky; top:0; z-index:999; background:#222; color:#fff;
+    padding:12px 24px; display:flex; align-items:center; justify-content:space-between;
+    font-size:0.9em; flex-wrap:wrap; gap:10px;
+  }
+  #chrome .brand { font-weight:bold; letter-spacing:0.5px; }
+  #chrome .crumb { color:#bbb; }
+  #chrome .crumb b { color:#fff; }
+  #legendBtn { background:#444; color:#fff; border:1px solid #777; padding:6px 14px; border-radius:3px; cursor:pointer; font-size:0.85em; }
+  #legendBtn:hover { background:#666; }
+
+  .legend {
+    background:#fffbe6; border-bottom:2px solid #ddd; padding:10px 24px; font-size:0.85em; color:#555;
+  }
+  .legend b { color:#000; }
+  .legend.hidden { display:none; }
+
+  /* Wireframe primitives */
+  .wf-box { border:1px solid #ccc; background:#f9f9f9; padding:16px; }
+  .wf-label { font-size:0.75em; text-transform:uppercase; letter-spacing:0.5px; color:#999; font-weight:bold; margin-bottom:8px; }
+  .placeholder-img { background:#dcdcdc; border:1px solid #bbb; color:#888; display:flex; align-items:center; justify-content:center; font-size:0.85em; min-height:120px; text-align:center; }
+  .text-lines > span { display:block; height:8px; background:#ddd; margin-bottom:6px; border-radius:2px; }
+  .text-lines > span:nth-child(1){width:95%;} .text-lines > span:nth-child(2){width:85%;} .text-lines > span:nth-child(3){width:60%;}
+
+  /* STATIC button look — no hover, no pointer, clearly "not active in this prototype" */
+  .static-btn {
+    border:1px solid #999; background:#f0f0f0; color:#666;
+    padding:9px 16px; display:inline-block; font-weight:bold; font-size:0.85em;
+    cursor:default; border-radius:3px;
+  }
+  .static-btn.primary { background:#e3e3e3; color:#444; border-color:#888; }
+
+  /* Nav bar — only these tabs are interactive */
+  .nav-bar { background:#333; color:#fff; padding:14px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .nav-bar .logo { font-weight:bold; border:1px solid #777; padding:6px 14px; border-radius:3px; }
+  .nav-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+  .nav-tab { padding:9px 16px; border:1px solid #777; cursor:pointer; font-size:0.88em; background:#3d3d3d; border-radius:3px; transition:background 0.15s; }
+  .nav-tab:hover { background:#555; }
+  .nav-tab.active { background:#fff; color:#000; border-color:#fff; font-weight:bold; }
+  .nav-icons { display:flex; gap:14px; align-items:center; font-size:0.85em; color:#aaa; }
+
+  /* Language toggle — segmented pill switch, top-right of every header for easy discovery */
+  .lang-toggle { display:flex; border:1px solid #777; border-radius:14px; overflow:hidden; }
+  .lang-opt { padding:6px 12px; cursor:pointer; background:#3d3d3d; color:#ccc; font-size:0.8em; font-weight:bold; }
+  .lang-opt.active { background:#fff; color:#000; }
+  .lang-opt:hover:not(.active) { background:#555; }
+  .whatsapp-icon { cursor:default; color:#ccc; }
+
+  .page-wrap { max-width:1300px; margin:0 auto; padding:24px; }
+  .screen { display:none; }
+  .screen.active { display:block; }
+
+  h2.sec { color:#333; font-size:1.15em; margin:28px 0 10px; padding-bottom:6px; border-bottom:1px solid #ccc; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-bottom:15px; }
+  .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:15px; }
+  .grid2 { display:grid; grid-template-columns:repeat(2,1fr); gap:15px; margin-bottom:15px; }
+
+  .hero { min-height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:14px; }
+
+  footer.wf-footer { background:#2b2b2b; color:#ddd; padding:20px; margin-top:25px; border-radius:3px; }
+  footer.wf-footer .grid4 { color:#ccc; font-size:0.9em; }
+
+  .breadcrumb { font-size:0.85em; color:#888; margin-bottom:15px; }
+
+  table.spec { width:100%; border-collapse:collapse; margin:10px 0; font-size:0.85em; }
+  table.spec th { background:#444; color:#fff; padding:8px; text-align:left; }
+  table.spec td { padding:8px; border-bottom:1px solid #ddd; }
+
+  .note { background:#fff3cd; border-left:3px solid #d4a017; padding:8px 12px; margin:12px 0; font-size:0.8em; color:#664d00; }
+
+  /* Simple flow diagram screen */
+  .flowmap { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; padding:20px 10px; }
+  .flow-node { border:1px solid #999; background:#fff; padding:12px 18px; text-align:center; font-weight:bold; min-width:150px; border-radius:3px; }
+  .flow-arrow { align-self:center; font-size:1.4em; color:#999; }
+  .journey-steps { background:#fff; border:1px solid #ddd; border-radius:4px; padding:20px; margin-top:25px; }
+  .journey-steps ol { margin-left:20px; }
+  .journey-steps li { margin-bottom:8px; }
+  .start-btn { display:inline-block; margin-top:20px; padding:12px 22px; background:#333; color:#fff; border-radius:3px; cursor:pointer; font-weight:bold; }
+  .start-btn:hover { background:#555; }
+</style>
+</head>
+<body>
+
+<div id="chrome">
+  <div class="brand">DEON TAPES — WIREFRAME PROTOTYPE</div>
+  <div class="crumb">Current page: <b id="crumbLabel">Home</b></div>
+  <div style="display:flex; gap:8px;">
+    <button id="legendBtn" onclick="goTo('flowmap')">🗺️ Site Map</button>
+    <button id="legendBtn" onclick="toggleLegend()">ℹ️ How to use this</button>
+  </div>
+</div>
+<div class="legend" id="legendBar">
+  <b>How to use:</b> Only the items in the top <b>navigation bar</b> (Home, About, Infrastructure, etc.) are clickable in this prototype — click them to move between pages, exactly like real tabs on a website.
+  All other buttons and cards (e.g. "Contact Us", "View Details") are shown as <b>static placeholders</b> for now, just to indicate where they will sit and what they will say once the site is built.
+</div>
+
+<!-- ============================================================ -->
+<!-- SITE MAP / FLOW SCREEN                                        -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-flowmap">
+  <div class="page-wrap">
+    <h2 class="sec" style="font-size:1.4em; border-bottom:none;">Site Navigation Flow</h2>
+    <p style="color:#666; margin-bottom:10px;">This shows the 9 pages of the site and how they connect through the navigation bar.</p>
+
+    <div class="flowmap">
+      <div class="flow-node">Home</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">About Us</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Infrastructure</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Quality &amp; Certs</div>
+    </div>
+    <div class="flowmap">
+      <div class="flow-node">Products Hub</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Product Detail</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Contact</div>
+    </div>
+    <div class="flowmap">
+      <div class="flow-node">Blog Listing</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Blog Post</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Contact</div>
+    </div>
+
+    <div class="journey-steps">
+      <h3 style="margin-bottom:10px;">Typical user journey</h3>
+      <ol>
+        <li>User lands on <b>Home</b>.</li>
+        <li>Clicks the <b>Products</b> tab in the nav bar → moves to <b>Products Hub</b>.</li>
+        <li>Browses product cards (static for now) → would open a <b>Product Detail</b> page.</li>
+        <li>Clicks the <b>Contact</b> tab → moves to <b>Contact Us</b> page to send an enquiry.</li>
+        <li>At any point, the same nav bar lets the user jump to About, Infrastructure, Quality &amp; Certs, or Blog.</li>
+      </ol>
+    </div>
+
+    <div style="text-align:center;">
+      <div class="start-btn" onclick="goTo('home')">▶ Start Prototype at Home Page</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- HOME                                                          -->
+<!-- ============================================================ -->
+<div class="screen active" id="screen-home">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab" onclick="goTo('products')">Products</div>
+      <div class="nav-tab" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="wf-box hero">
+      <div class="wf-label">Hero — Headline + CTA + Image/Video</div>
+      <div class="placeholder-img" style="width:100%; min-height:140px;">Hero Image / Video</div>
+      <div style="font-size:1.25em; font-weight:bold;">"Tape Solutions That Adhere to Excellence"</div>
+      <div><span class="static-btn primary">Contact Us</span> &nbsp; <span class="static-btn">Explore Products</span></div>
+    </div>
+
+    <h2 class="sec">Brief Company Intro</h2>
+    <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+    <h2 class="sec">Industries We Serve</h2>
+    <div class="grid3">
+      <div class="wf-box">Automotive</div>
+      <div class="wf-box">Construction</div>
+      <div class="wf-box">Defence &amp; Aerospace</div>
+      <div class="wf-box">Electrical</div>
+      <div class="wf-box">Healthcare</div>
+      <div class="wf-box">Packaging</div>
+      <div class="wf-box">Paints &amp; Carpentry</div>
+      <div class="wf-box">Renewable Energy</div>
+      <div class="wf-box">Surface Protection &amp; Whitegoods</div>
+    </div>
+
+    <h2 class="sec">Stats Band</h2>
+    <div class="wf-box">
+      <div class="grid3" style="margin-bottom:0; text-align:center;">
+        <div><b>500+</b><br>OEM Brands</div>
+        <div><b>50,000 m²</b><br>Capacity/Month</div>
+        <div><b>200+</b><br>Employees</div>
+      </div>
+    </div>
+
+    <h2 class="sec">Product Category Preview</h2>
+    <div class="grid4">
+      <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Product Image</div><div style="margin:8px 0;">Electrical Insulation</div><span class="static-btn">View Details</span></div>
+      <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Product Image</div><div style="margin:8px 0;">Floor Marking</div><span class="static-btn">View Details</span></div>
+      <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Product Image</div><div style="margin:8px 0;">Masking Tape</div><span class="static-btn">View Details</span></div>
+      <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Product Image</div><div style="margin:8px 0;">Wire Harness Tape</div><span class="static-btn">View Details</span></div>
+    </div>
+
+    <h2 class="sec">Our Strengths</h2>
+    <div class="grid3">
+      <div class="wf-box">Factory</div>
+      <div class="wf-box">Taiwanese Technology</div>
+      <div class="wf-box">Leading Manufacturer</div>
+    </div>
+
+    <h2 class="sec">Client Logos Strip</h2>
+    <div class="wf-box" style="text-align:center;">
+      <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
+        <div class="placeholder-img" style="width:90px; min-height:55px;">Logo 1</div>
+        <div class="placeholder-img" style="width:90px; min-height:55px;">Logo 2</div>
+        <div class="placeholder-img" style="width:90px; min-height:55px;">Logo 3</div>
+        <div class="placeholder-img" style="width:90px; min-height:55px;">Logo 4</div>
+        <div class="placeholder-img" style="width:90px; min-height:55px;">Logo 5</div>
+        <div class="placeholder-img" style="width:90px; min-height:55px;">Logo 6</div>
+      </div>
+    </div>
+
+    <h2 class="sec">Certifications Strip</h2>
+    <div class="wf-box" style="text-align:center;">
+      <div class="grid4" style="margin-bottom:0;">
+        <div><b>ISO 9001</b><br><span style="font-size:0.8em; color:#888;">Quality Mgmt</span></div>
+        <div><b>ISO 45001</b><br><span style="font-size:0.8em; color:#888;">Safety</span></div>
+        <div><b>ISO 14001</b><br><span style="font-size:0.8em; color:#888;">Environment</span></div>
+        <div><b>UL</b><br><span style="font-size:0.8em; color:#888;">Electrical</span></div>
+      </div>
+    </div>
+
+    <footer class="wf-footer">
+      <div class="wf-label" style="color:#999;">Footer (same on every page)</div>
+      <div class="grid4">
+        <div><b>Navigation</b><br>Home | About | Products | Contact</div>
+        <div><b>Address</b><br>Plot 123, Industrial Area, Mumbai</div>
+        <div><b>Contact</b><br>+91-89-89637070<br>info@deontapes.com</div>
+        <div><b>Follow Us</b><br>LinkedIn | Facebook | YouTube</div>
+      </div>
+    </footer>
+    <div class="note">Open item: Should industry cards filter the Products page when clicked? YouTube placement still to be decided.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ABOUT US                                                      -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-about">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab active" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab" onclick="goTo('products')">Products</div>
+      <div class="nav-tab" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="wf-box hero"><div class="wf-label">Page Hero/Banner</div><div style="font-size:1.25em;">The DEON Journey</div></div>
+
+    <h2 class="sec">Company History / Timeline (2016 → Present)</h2>
+    <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+    <h2 class="sec">Mission &amp; Vision</h2>
+    <div class="grid2">
+      <div class="wf-box text-lines"><div class="wf-label">Mission</div><span></span><span></span></div>
+      <div class="wf-box text-lines"><div class="wf-label">Vision</div><span></span><span></span></div>
+    </div>
+
+    <h2 class="sec">Leadership / Team (optional)</h2>
+    <div class="wf-box" style="border-style:dashed;"><div class="wf-label">Placeholder — pending client confirmation</div></div>
+
+    <h2 class="sec">Manufacturing Capability Summary</h2>
+    <div class="wf-box text-lines"><span></span><span></span>
+      <div style="margin-top:10px;"><span class="static-btn">Learn More about Infrastructure</span></div>
+    </div>
+
+    <h2 class="sec">CTA Block</h2>
+    <div class="wf-box hero" style="min-height:110px;">
+      <div>Ready to partner with us?</div>
+      <div><span class="static-btn primary">Contact Our Team</span> &nbsp;<span class="static-btn">Explore Products</span></div>
+    </div>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- INFRASTRUCTURE                                                -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-infra">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab active" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab" onclick="goTo('products')">Products</div>
+      <div class="nav-tab" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="wf-box hero"><div class="wf-label">Page Hero/Banner</div><div style="font-size:1.25em;">Our Manufacturing Excellence</div></div>
+
+    <h2 class="sec">Factory Overview</h2>
+    <div class="grid2">
+      <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+      <div class="placeholder-img">Image Gallery / Carousel</div>
+    </div>
+
+    <h2 class="sec">Key Infrastructure Highlights</h2>
+    <div class="grid4">
+      <div class="wf-box">Dust-Free Facility</div>
+      <div class="wf-box">Advanced Machinery</div>
+      <div class="wf-box">Safety Protocols</div>
+      <div class="wf-box">Sustainability</div>
+    </div>
+
+    <h2 class="sec">Production Capacity Stats</h2>
+    <div class="wf-box">
+      <div class="grid3" style="margin-bottom:0; text-align:center;">
+        <div><b>50,000 m²</b><br>Monthly Capacity</div><div><b>200+</b><br>Employees</div><div><b>25+</b><br>Product Categories</div>
+      </div>
+    </div>
+
+    <h2 class="sec">CTA Block</h2>
+    <div class="wf-box hero" style="min-height:100px;">
+      <div>Want to see our facility in action?</div>
+      <span class="static-btn primary">Schedule a Virtual Tour</span>
+    </div>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- QUALITY & CERTIFICATIONS                                      -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-quality">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab active" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab" onclick="goTo('products')">Products</div>
+      <div class="nav-tab" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="wf-box hero"><div class="wf-label">Page Hero/Banner</div><div style="font-size:1.25em;">Quality &amp; Certifications</div></div>
+
+    <h2 class="sec">Quality Control Process</h2>
+    <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+    <h2 class="sec">Certifications Grid</h2>
+    <div class="grid4">
+      <div class="wf-box"><div class="placeholder-img" style="min-height:80px;">ISO 9001</div></div>
+      <div class="wf-box"><div class="placeholder-img" style="min-height:80px;">ISO 45001</div></div>
+      <div class="wf-box"><div class="placeholder-img" style="min-height:80px;">ISO 14001</div></div>
+      <div class="wf-box"><div class="placeholder-img" style="min-height:80px;">UL</div></div>
+    </div>
+
+    <h2 class="sec">Testing / Lab Capability</h2>
+    <div class="grid2">
+      <div class="wf-box text-lines"><span></span><span></span></div>
+      <div class="placeholder-img">Lab/Testing Equipment Image</div>
+    </div>
+
+    <h2 class="sec">CTA Block</h2>
+    <div class="wf-box hero" style="min-height:100px;">
+      <div>Need certified products for your application?</div>
+      <span class="static-btn primary">Contact Our Quality Team</span>
+    </div>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PRODUCTS HUB                                                  -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-products">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab active" onclick="goTo('products')">Products</div>
+      <div class="nav-tab" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <h2 class="sec" style="border-bottom:none; margin-top:10px;">Our Products</h2>
+    <div class="note">Open item: Filters shown as a sidebar here — top horizontal bar is the alternative option, to be confirmed.</div>
+
+    <div class="grid2" style="grid-template-columns: 1fr 3fr;">
+      <div class="wf-box">
+        <div class="wf-label">Sidebar Filters</div>
+        <div>☐ Automotive</div><div>☐ Construction</div><div>☐ Defence &amp; Aerospace</div><div>☐ Electrical</div>
+        <div>☐ Healthcare</div><div>☐ Packaging</div><div>☐ Paints &amp; Carpentry</div><div>☐ Renewable Energy</div>
+        <div>☐ Surface Protection &amp; Whitegoods</div>
+        <div style="margin-top:10px;">☐ Electrical Insulation</div><div>☐ Floor Marking</div><div>☐ Masking</div><div>☐ Wire Harness</div>
+      </div>
+      <div class="wf-box">
+        <div class="wf-label">Product Grid</div>
+        <div class="grid4">
+          <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 1</div><span class="static-btn">Details</span></div>
+          <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 2</div><span class="static-btn">Details</span></div>
+          <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 3</div><span class="static-btn">Details</span></div>
+          <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 4</div><span class="static-btn">Details</span></div>
+        </div>
+        <p style="font-size:0.85em; color:#999;">... 21 more products ...</p>
+      </div>
+    </div>
+
+    <h2 class="sec">Pagination / Load More</h2>
+    <div class="wf-box" style="text-align:center;">
+      <div style="display:flex; gap:8px; justify-content:center; margin-bottom:12px;">
+        <span class="static-btn">◀ 1</span><span class="static-btn">2</span><span class="static-btn">3</span><span class="static-btn">▶</span>
+      </div>
+      <span class="static-btn primary">Load More Products</span>
+      <p style="font-size:0.8em; color:#999; margin-top:8px;">Showing 1–4 of 25 products</p>
+    </div>
+    <div class="note">Open item: Pagination vs. "Load More" vs. both — to be confirmed.</div>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PRODUCT DETAIL                                                -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-product-detail">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab active" onclick="goTo('products')">Products</div>
+      <div class="nav-tab" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="breadcrumb">Home &gt; Products &gt; Electrical Insulation &gt; Product Name</div>
+
+    <div class="grid2">
+      <div>
+        <div class="placeholder-img" style="min-height:300px;">Main Product Image</div>
+        <div class="grid4" style="margin-top:8px;">
+          <div class="placeholder-img" style="min-height:60px;">T1</div><div class="placeholder-img" style="min-height:60px;">T2</div>
+          <div class="placeholder-img" style="min-height:60px;">T3</div><div class="placeholder-img" style="min-height:60px;">T4</div>
+        </div>
+      </div>
+      <div class="wf-box">
+        <h3>Product Name</h3>
+        <p style="color:#777; margin:8px 0;">Short description of features and use case.</p>
+        <table class="spec">
+          <tr><th>Parameter</th><th>Value</th></tr>
+          <tr><td>Temperature Range</td><td>-20°C to +150°C</td></tr>
+          <tr><td>Thickness</td><td>0.05–0.5mm</td></tr>
+          <tr><td>Certifications</td><td>ISO 9001, UL</td></tr>
+        </table>
+        <span class="static-btn">📥 Download Datasheet</span><br><br>
+        <span class="static-btn primary">💬 Enquire via WhatsApp</span>
+      </div>
+    </div>
+
+    <h2 class="sec">Industries This Product Serves</h2>
+    <div class="wf-box">Automotive &nbsp;|&nbsp; Aerospace &nbsp;|&nbsp; Electrical &nbsp;|&nbsp; Construction</div>
+
+    <h2 class="sec">Related Products</h2>
+    <div class="grid4">
+      <div class="wf-box" style="text-align:center;">Related Product 1</div>
+      <div class="wf-box" style="text-align:center;">Related Product 2</div>
+      <div class="wf-box" style="text-align:center;">Related Product 3</div>
+      <div class="wf-box" style="text-align:center;">Related Product 4</div>
+    </div>
+
+    <h2 class="sec">Enquiry CTA</h2>
+    <div class="wf-box hero" style="min-height:100px;">
+      <div>Ready to Order or Need More Information?</div>
+      <div><span class="static-btn primary">💬 Enquire via WhatsApp</span> &nbsp;<span class="static-btn">☎️ Call Sales Team</span></div>
+    </div>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- BLOG LISTING                                                  -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-blog">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab" onclick="goTo('products')">Products</div>
+      <div class="nav-tab active" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="wf-box hero" style="min-height:100px;"><div style="font-size:1.25em;">Insights &amp; Resources</div></div>
+
+    <h2 class="sec">Category Filter (optional)</h2>
+    <div class="wf-box">
+      <span class="static-btn primary">All</span> &nbsp;
+      <span class="static-btn">Applications</span> &nbsp;
+      <span class="static-btn">Industry Trends</span> &nbsp;
+      <span class="static-btn">Case Studies</span> &nbsp;
+      <span class="static-btn">How-To Guides</span>
+    </div>
+    <div class="note">Open item: Category filter is optional per the brief — confirm if needed.</div>
+
+    <h2 class="sec">Blog Post Grid</h2>
+    <div class="grid2">
+      <div class="wf-box"><div class="placeholder-img" style="min-height:120px;">Featured Image</div><h4 style="margin-top:8px;">Blog Post Title Here</h4></div>
+      <div class="wf-box"><div class="placeholder-img" style="min-height:120px;">Featured Image</div><h4 style="margin-top:8px;">Blog Post Title Here</h4></div>
+      <div class="wf-box"><div class="placeholder-img" style="min-height:120px;">Featured Image</div><h4 style="margin-top:8px;">Blog Post Title Here</h4></div>
+      <div class="wf-box"><div class="placeholder-img" style="min-height:120px;">Featured Image</div><h4 style="margin-top:8px;">Blog Post Title Here</h4></div>
+    </div>
+    <p style="text-align:center; font-size:0.85em;"><a href="javascript:void(0)" onclick="goTo('blog-post')" style="color:#555;">→ Open a sample Blog Post page</a></p>
+
+    <h2 class="sec">Pagination</h2>
+    <div class="wf-box" style="text-align:center;">
+      <span class="static-btn">◀ 1</span><span class="static-btn">2</span><span class="static-btn">3</span><span class="static-btn">▶</span>
+    </div>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- BLOG POST TEMPLATE                                            -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-blog-post">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab" onclick="goTo('products')">Products</div>
+      <div class="nav-tab active" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="breadcrumb">Home &gt; Blog &gt; Post Title</div>
+    <h2 style="margin-bottom:10px;">Complete Blog Post Title Goes Here</h2>
+    <div style="font-size:0.85em; color:#999; margin-bottom:10px;">Published on June 15, 2026 | By Author Name | 5 min read</div>
+    <div class="placeholder-img" style="min-height:220px;">Featured Image</div>
+
+    <h2 class="sec">Article Body</h2>
+    <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+    <h2 class="sec">Author Info (optional)</h2>
+    <div class="wf-box" style="display:flex; gap:15px; align-items:center;">
+      <div class="placeholder-img" style="width:70px; min-height:70px; border-radius:50%;">Photo</div>
+      <div><b>Author Name</b><br><span style="font-size:0.85em; color:#888;">Technical Director</span></div>
+    </div>
+
+    <h2 class="sec">Related Posts</h2>
+    <div class="grid3">
+      <div class="wf-box">Related Post 1</div>
+      <div class="wf-box">Related Post 2</div>
+      <div class="wf-box">Related Post 3</div>
+    </div>
+
+    <h2 class="sec">CTA Block</h2>
+    <div class="wf-box hero" style="min-height:100px;">
+      <div>Have a question about our products?</div>
+      <div><span class="static-btn primary">Contact Our Team</span> &nbsp;<span class="static-btn">Explore Products</span></div>
+    </div>
+
+    <p style="text-align:center; font-size:0.85em; margin-top:10px;"><a href="javascript:void(0)" onclick="goTo('blog')" style="color:#555;">← Back to Blog Listing</a></p>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CONTACT                                                       -->
+<!-- ============================================================ -->
+<div class="screen" id="screen-contact">
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab" onclick="goTo('home')">Home</div>
+      <div class="nav-tab" onclick="goTo('about')">About</div>
+      <div class="nav-tab" onclick="goTo('infra')">Infrastructure</div>
+      <div class="nav-tab" onclick="goTo('quality')">Quality &amp; Certs</div>
+      <div class="nav-tab" onclick="goTo('products')">Products</div>
+      <div class="nav-tab" onclick="goTo('blog')">Blog</div>
+      <div class="nav-tab active" onclick="goTo('contact')">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle" title="Switch site language">
+        <div class="lang-opt active" onclick="setLang(this,'EN')">EN</div>
+        <div class="lang-opt" onclick="setLang(this,'HI')">हिं</div>
+      </div>
+      <div class="whatsapp-icon">💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="wf-box hero" style="min-height:100px;"><div style="font-size:1.25em;">Get in Touch</div></div>
+
+    <div class="grid2">
+      <div class="wf-box">
+        <div class="wf-label">Contact Form</div>
+        <div>Name *</div><div class="placeholder-img" style="min-height:35px; margin-bottom:8px;">input field</div>
+        <div>Email *</div><div class="placeholder-img" style="min-height:35px; margin-bottom:8px;">input field</div>
+        <div>Phone</div><div class="placeholder-img" style="min-height:35px; margin-bottom:8px;">input field</div>
+        <div>Message *</div><div class="placeholder-img" style="min-height:60px; margin-bottom:8px;">textarea</div>
+        <span class="static-btn primary">Send Message</span>
+        <div class="note">Open item: Optional Industry dropdown — confirm with client.</div>
+      </div>
+      <div>
+        <div class="wf-box"><div class="placeholder-img" style="min-height:180px;">Google Maps Embed</div></div>
+        <div class="wf-box" style="margin-top:10px;">
+          <div><b>Address:</b> Plot 123, Thane, Mumbai</div>
+          <div><b>Phone:</b> +91-89-89637070</div>
+          <div><b>Email:</b> info@deontapes.com</div>
+        </div>
+        <div class="wf-box" style="margin-top:10px; text-align:center;">
+          <span class="static-btn primary">💬 Open WhatsApp</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+  </div>
+</div>
+
+<script>
+  const labels = {
+    flowmap: 'Site Map', home: 'Home', about: 'About Us', infra: 'Infrastructure & Manufacturing',
+    quality: 'Quality & Certifications', products: 'Products Hub', 'product-detail': 'Product Detail',
+    blog: 'Blog Listing', 'blog-post': 'Blog Post', contact: 'Contact Us'
+  };
+
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
+    document.getElementById('crumbLabel').textContent = labels[id];
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function toggleLegend() {
+    document.getElementById('legendBar').classList.toggle('hidden');
+  }
+
+  function setLang(el, lang) {
+    el.parentElement.querySelectorAll('.lang-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

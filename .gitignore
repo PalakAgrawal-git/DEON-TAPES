@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# large source content (kept out of git)
+*.zip
+_website_content/
+
+# scratch / build artifacts
+scratch_*.json
+scratch_fonts/
+scratch_logo/
+
+# local claude settings
+.claude/settings.local.json

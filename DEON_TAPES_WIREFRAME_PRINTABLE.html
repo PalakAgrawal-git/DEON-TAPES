@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEON Tapes — Wireframe (Print / PDF Version)</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#fff; color:#333; line-height:1.5; }
+
+  .cover { padding:60px 40px; text-align:center; border-bottom:3px solid #333; margin-bottom:10px; }
+  .cover h1 { font-size:2em; margin-bottom:10px; }
+  .cover p { color:#666; }
+
+  .page-block { padding:30px 40px; page-break-after:always; border-bottom:2px dashed #aaa; }
+  .page-block:last-child { page-break-after:auto; border-bottom:none; }
+
+  .page-num { display:inline-block; background:#333; color:#fff; padding:6px 14px; border-radius:3px; font-weight:bold; font-size:0.85em; margin-bottom:8px; }
+  .page-title { font-size:1.5em; color:#222; margin-bottom:6px; }
+  .page-sub { color:#777; font-size:0.9em; margin-bottom:20px; }
+
+  .wf-box { border:1px solid #ccc; background:#f9f9f9; padding:14px; }
+  .wf-label { font-size:0.72em; text-transform:uppercase; letter-spacing:0.5px; color:#999; font-weight:bold; margin-bottom:6px; }
+  .placeholder-img { background:#dcdcdc; border:1px solid #bbb; color:#888; display:flex; align-items:center; justify-content:center; font-size:0.8em; min-height:90px; text-align:center; }
+  .text-lines > span { display:block; height:7px; background:#ddd; margin-bottom:5px; border-radius:2px; }
+  .text-lines > span:nth-child(1){width:95%;} .text-lines > span:nth-child(2){width:85%;} .text-lines > span:nth-child(3){width:60%;}
+
+  .static-btn { border:1px solid #999; background:#f0f0f0; color:#666; padding:7px 14px; display:inline-block; font-weight:bold; font-size:0.8em; border-radius:3px; }
+  .static-btn.primary { background:#e3e3e3; color:#444; border-color:#888; }
+
+  .nav-bar { background:#333; color:#fff; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:16px; border-radius:3px; }
+  .nav-bar .logo { font-weight:bold; border:1px solid #777; padding:4px 10px; border-radius:3px; font-size:0.85em; }
+  .nav-tabs { display:flex; gap:5px; flex-wrap:wrap; }
+  .nav-tab { padding:6px 11px; border:1px solid #777; font-size:0.78em; background:#3d3d3d; border-radius:3px; }
+  .nav-tab.active { background:#fff; color:#000; border-color:#fff; font-weight:bold; }
+  .nav-icons { display:flex; gap:10px; align-items:center; font-size:0.75em; color:#aaa; }
+  .lang-toggle { display:flex; border:1px solid #777; border-radius:12px; overflow:hidden; }
+  .lang-opt { padding:4px 9px; background:#3d3d3d; color:#ccc; font-size:0.78em; font-weight:bold; }
+  .lang-opt.active { background:#fff; color:#000; }
+
+  h2.sec { color:#333; font-size:1em; margin:16px 0 8px; padding-bottom:4px; border-bottom:1px solid #ccc; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:10px; }
+  .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:10px; }
+  .grid2 { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:10px; }
+
+  .hero { min-height:110px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:8px; }
+
+  footer.wf-footer { background:#2b2b2b; color:#ddd; padding:14px; margin-top:14px; border-radius:3px; font-size:0.85em; }
+  footer.wf-footer .grid4 { color:#ccc; font-size:0.85em; }
+
+  .breadcrumb { font-size:0.8em; color:#888; margin-bottom:10px; }
+  table.spec { width:100%; border-collapse:collapse; margin:8px 0; font-size:0.78em; }
+  table.spec th { background:#444; color:#fff; padding:6px; text-align:left; }
+  table.spec td { padding:6px; border-bottom:1px solid #ddd; }
+
+  .note { background:#fff3cd; border-left:3px solid #d4a017; padding:6px 10px; margin:8px 0; font-size:0.75em; color:#664d00; }
+
+  .flowmap { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; padding:14px 0; }
+  .flow-node { border:1px solid #999; background:#fff; padding:10px 14px; text-align:center; font-weight:bold; min-width:120px; border-radius:3px; font-size:0.85em; }
+  .flow-arrow { align-self:center; font-size:1.2em; color:#999; }
+  .journey-steps { background:#fff; border:1px solid #ddd; border-radius:4px; padding:14px; margin-top:14px; font-size:0.85em; }
+  .journey-steps ol { margin-left:18px; }
+  .journey-steps li { margin-bottom:6px; }
+
+  @media print {
+    .page-block { page-break-after:always; }
+    body { font-size:11px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>DEON TAPES — WEBSITE WIREFRAME</h1>
+  <p>Static Print / PDF Version — Tab-to-Tab Flow, One Page Per Screen</p>
+  <p style="margin-top:8px; font-size:0.85em;">9 Page Types | Desktop-First | Greyscale Wireframe Styling</p>
+</div>
+
+<!-- ============== 0. SITE MAP / FLOW ============== -->
+<div class="page-block">
+  <div class="page-num">SITE MAP</div>
+  <div class="page-title">Site Navigation Flow</div>
+  <div class="page-sub">How the 9 pages connect through the navigation bar</div>
+
+  <div class="flowmap">
+    <div class="flow-node">Home</div><div class="flow-arrow">→</div>
+    <div class="flow-node">About Us</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Infrastructure</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Quality &amp; Certs</div>
+  </div>
+  <div class="flowmap">
+    <div class="flow-node">Products Hub</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Product Detail</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Contact</div>
+  </div>
+  <div class="flowmap">
+    <div class="flow-node">Blog Listing</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Blog Post</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Contact</div>
+  </div>
+
+  <div class="journey-steps">
+    <b>Typical user journey</b>
+    <ol>
+      <li>User lands on <b>Home</b>.</li>
+      <li>Clicks the <b>Products</b> tab in the nav bar → moves to <b>Products Hub</b>.</li>
+      <li>Browses product cards → opens a <b>Product Detail</b> page.</li>
+      <li>Clicks the <b>Contact</b> tab → moves to <b>Contact Us</b> page to send an enquiry.</li>
+      <li>At any point, the nav bar lets the user jump to About, Infrastructure, Quality &amp; Certs, or Blog.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============== 1. HOME ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 1 / 9</div>
+  <div class="page-title">Home</div>
+  <div class="page-sub">Nav tab active: Home</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab active">Home</div><div class="nav-tab">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab">Products</div><div class="nav-tab">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="wf-box hero">
+    <div class="wf-label">Hero — Headline + CTA + Image/Video</div>
+    <div class="placeholder-img" style="width:100%;">Hero Image / Video</div>
+    <div style="font-weight:bold;">"Tape Solutions That Adhere to Excellence"</div>
+    <div><span class="static-btn primary">Contact Us</span> &nbsp; <span class="static-btn">Explore Products</span></div>
+  </div>
+
+  <h2 class="sec">Brief Company Intro</h2>
+  <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+  <h2 class="sec">Industries We Serve</h2>
+  <div class="grid3">
+    <div class="wf-box">Automotive</div><div class="wf-box">Construction</div><div class="wf-box">Defence &amp; Aerospace</div>
+    <div class="wf-box">Electrical</div><div class="wf-box">Healthcare</div><div class="wf-box">Packaging</div>
+    <div class="wf-box">Paints &amp; Carpentry</div><div class="wf-box">Renewable Energy</div><div class="wf-box">Surface Protection &amp; Whitegoods</div>
+  </div>
+
+  <h2 class="sec">Stats Band</h2>
+  <div class="wf-box"><div class="grid3" style="margin-bottom:0; text-align:center;">
+    <div><b>500+</b><br>OEM Brands</div><div><b>50,000 m²</b><br>Capacity/Month</div><div><b>200+</b><br>Employees</div>
+  </div></div>
+
+  <h2 class="sec">Product Category Preview</h2>
+  <div class="grid4">
+    <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Image</div><div>Electrical Insulation</div><span class="static-btn">View Details</span></div>
+    <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Image</div><div>Floor Marking</div><span class="static-btn">View Details</span></div>
+    <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Image</div><div>Masking Tape</div><span class="static-btn">View Details</span></div>
+    <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Image</div><div>Wire Harness Tape</div><span class="static-btn">View Details</span></div>
+  </div>
+
+  <h2 class="sec">Our Strengths</h2>
+  <div class="grid3"><div class="wf-box">Factory</div><div class="wf-box">Taiwanese Technology</div><div class="wf-box">Leading Manufacturer</div></div>
+
+  <h2 class="sec">Client Logos Strip</h2>
+  <div class="wf-box" style="text-align:center;">
+    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+      <div class="placeholder-img" style="width:70px; min-height:45px;">Logo 1</div><div class="placeholder-img" style="width:70px; min-height:45px;">Logo 2</div>
+      <div class="placeholder-img" style="width:70px; min-height:45px;">Logo 3</div><div class="placeholder-img" style="width:70px; min-height:45px;">Logo 4</div>
+      <div class="placeholder-img" style="width:70px; min-height:45px;">Logo 5</div><div class="placeholder-img" style="width:70px; min-height:45px;">Logo 6</div>
+    </div>
+  </div>
+
+  <h2 class="sec">Certifications Strip</h2>
+  <div class="wf-box" style="text-align:center;">
+    <div class="grid4" style="margin-bottom:0;">
+      <div><b>ISO 9001</b><br><span style="font-size:0.75em; color:#888;">Quality Mgmt</span></div>
+      <div><b>ISO 45001</b><br><span style="font-size:0.75em; color:#888;">Safety</span></div>
+      <div><b>ISO 14001</b><br><span style="font-size:0.75em; color:#888;">Environment</span></div>
+      <div><b>UL</b><br><span style="font-size:0.75em; color:#888;">Electrical</span></div>
+    </div>
+  </div>
+
+  <footer class="wf-footer">
+    <div class="wf-label" style="color:#999;">Footer (same on every page)</div>
+    <div class="grid4">
+      <div><b>Navigation</b><br>Home | About | Products | Contact</div>
+      <div><b>Address</b><br>Plot 123, Industrial Area, Mumbai</div>
+      <div><b>Contact</b><br>+91-89-89637070<br>info@deontapes.com</div>
+      <div><b>Follow Us</b><br>LinkedIn | Facebook | YouTube</div>
+    </div>
+  </footer>
+  <div class="note">Open item: Should industry cards filter the Products page when clicked? YouTube placement still to be decided.</div>
+</div>
+
+<!-- ============== 2. ABOUT US ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 2 / 9</div>
+  <div class="page-title">About Us / DEON Journey</div>
+  <div class="page-sub">Nav tab active: About</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab active">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab">Products</div><div class="nav-tab">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="wf-box hero"><div class="wf-label">Page Hero/Banner</div><div style="font-weight:bold;">The DEON Journey</div></div>
+
+  <h2 class="sec">Company History / Timeline (2016 → Present)</h2>
+  <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+  <h2 class="sec">Mission &amp; Vision</h2>
+  <div class="grid2">
+    <div class="wf-box text-lines"><div class="wf-label">Mission</div><span></span><span></span></div>
+    <div class="wf-box text-lines"><div class="wf-label">Vision</div><span></span><span></span></div>
+  </div>
+
+  <h2 class="sec">Leadership / Team (optional)</h2>
+  <div class="wf-box" style="border-style:dashed;"><div class="wf-label">Placeholder — pending client confirmation</div></div>
+
+  <h2 class="sec">Manufacturing Capability Summary</h2>
+  <div class="wf-box text-lines"><span></span><span></span>
+    <div style="margin-top:8px;"><span class="static-btn">Learn More about Infrastructure</span></div>
+  </div>
+
+  <h2 class="sec">CTA Block</h2>
+  <div class="wf-box hero" style="min-height:80px;">
+    <div>Ready to partner with us?</div>
+    <div><span class="static-btn primary">Contact Our Team</span> &nbsp;<span class="static-btn">Explore Products</span></div>
+  </div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+<!-- ============== 3. INFRASTRUCTURE ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 3 / 9</div>
+  <div class="page-title">Infrastructure &amp; Manufacturing</div>
+  <div class="page-sub">Nav tab active: Infrastructure</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab">About</div><div class="nav-tab active">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab">Products</div><div class="nav-tab">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="wf-box hero"><div class="wf-label">Page Hero/Banner</div><div style="font-weight:bold;">Our Manufacturing Excellence</div></div>
+
+  <h2 class="sec">Factory Overview</h2>
+  <div class="grid2">
+    <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+    <div class="placeholder-img">Image Gallery / Carousel</div>
+  </div>
+
+  <h2 class="sec">Key Infrastructure Highlights</h2>
+  <div class="grid4">
+    <div class="wf-box">Dust-Free Facility</div><div class="wf-box">Advanced Machinery</div>
+    <div class="wf-box">Safety Protocols</div><div class="wf-box">Sustainability</div>
+  </div>
+
+  <h2 class="sec">Production Capacity Stats</h2>
+  <div class="wf-box"><div class="grid3" style="margin-bottom:0; text-align:center;">
+    <div><b>50,000 m²</b><br>Monthly Capacity</div><div><b>200+</b><br>Employees</div><div><b>25+</b><br>Product Categories</div>
+  </div></div>
+
+  <h2 class="sec">CTA Block</h2>
+  <div class="wf-box hero" style="min-height:80px;">
+    <div>Want to see our facility in action?</div>
+    <span class="static-btn primary">Schedule a Virtual Tour</span>
+  </div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+<!-- ============== 4. QUALITY & CERTIFICATIONS ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 4 / 9</div>
+  <div class="page-title">Quality Labs &amp; Certifications</div>
+  <div class="page-sub">Nav tab active: Quality &amp; Certs</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab active">Quality &amp; Certs</div><div class="nav-tab">Products</div><div class="nav-tab">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="wf-box hero"><div class="wf-label">Page Hero/Banner</div><div style="font-weight:bold;">Quality &amp; Certifications</div></div>
+
+  <h2 class="sec">Quality Control Process</h2>
+  <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+  <h2 class="sec">Certifications Grid</h2>
+  <div class="grid4">
+    <div class="wf-box"><div class="placeholder-img" style="min-height:60px;">ISO 9001</div></div>
+    <div class="wf-box"><div class="placeholder-img" style="min-height:60px;">ISO 45001</div></div>
+    <div class="wf-box"><div class="placeholder-img" style="min-height:60px;">ISO 14001</div></div>
+    <div class="wf-box"><div class="placeholder-img" style="min-height:60px;">UL</div></div>
+  </div>
+
+  <h2 class="sec">Testing / Lab Capability</h2>
+  <div class="grid2">
+    <div class="wf-box text-lines"><span></span><span></span></div>
+    <div class="placeholder-img">Lab/Testing Equipment Image</div>
+  </div>
+
+  <h2 class="sec">CTA Block</h2>
+  <div class="wf-box hero" style="min-height:80px;">
+    <div>Need certified products for your application?</div>
+    <span class="static-btn primary">Contact Our Quality Team</span>
+  </div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+<!-- ============== 5. PRODUCTS HUB ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 5 / 9</div>
+  <div class="page-title">Products Hub</div>
+  <div class="page-sub">Nav tab active: Products</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab active">Products</div><div class="nav-tab">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="note">Open item: Filters shown as a sidebar here — top horizontal bar is the alternative option, to be confirmed.</div>
+
+  <div class="grid2" style="grid-template-columns: 1fr 3fr;">
+    <div class="wf-box">
+      <div class="wf-label">Sidebar Filters</div>
+      <div>☐ Automotive</div><div>☐ Construction</div><div>☐ Defence &amp; Aerospace</div><div>☐ Electrical</div>
+      <div>☐ Healthcare</div><div>☐ Packaging</div><div>☐ Paints &amp; Carpentry</div><div>☐ Renewable Energy</div>
+      <div>☐ Surface Protection &amp; Whitegoods</div>
+      <div style="margin-top:8px;">☐ Electrical Insulation</div><div>☐ Floor Marking</div><div>☐ Masking</div><div>☐ Wire Harness</div>
+    </div>
+    <div class="wf-box">
+      <div class="wf-label">Product Grid</div>
+      <div class="grid4">
+        <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 1</div><span class="static-btn">Details</span></div>
+        <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 2</div><span class="static-btn">Details</span></div>
+        <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 3</div><span class="static-btn">Details</span></div>
+        <div class="wf-box" style="text-align:center;"><div class="placeholder-img">Img</div><div>Product 4</div><span class="static-btn">Details</span></div>
+      </div>
+      <p style="font-size:0.8em; color:#999;">... 21 more products ...</p>
+    </div>
+  </div>
+
+  <h2 class="sec">Pagination / Load More</h2>
+  <div class="wf-box" style="text-align:center;">
+    <div style="display:flex; gap:6px; justify-content:center; margin-bottom:10px;">
+      <span class="static-btn">◀ 1</span><span class="static-btn">2</span><span class="static-btn">3</span><span class="static-btn">▶</span>
+    </div>
+    <span class="static-btn primary">Load More Products</span>
+    <p style="font-size:0.75em; color:#999; margin-top:6px;">Showing 1–4 of 25 products</p>
+  </div>
+  <div class="note">Open item: Pagination vs. "Load More" vs. both — to be confirmed.</div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+<!-- ============== 6. PRODUCT DETAIL ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 6 / 9</div>
+  <div class="page-title">Product Detail (Template — applies to all 25 products)</div>
+  <div class="page-sub">Nav tab active: Products</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab active">Products</div><div class="nav-tab">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="breadcrumb">Home &gt; Products &gt; Electrical Insulation &gt; Product Name</div>
+
+  <div class="grid2">
+    <div>
+      <div class="placeholder-img" style="min-height:200px;">Main Product Image</div>
+      <div class="grid4" style="margin-top:6px;">
+        <div class="placeholder-img" style="min-height:45px;">T1</div><div class="placeholder-img" style="min-height:45px;">T2</div>
+        <div class="placeholder-img" style="min-height:45px;">T3</div><div class="placeholder-img" style="min-height:45px;">T4</div>
+      </div>
+    </div>
+    <div class="wf-box">
+      <h3 style="font-size:0.95em;">Product Name</h3>
+      <p style="color:#777; margin:6px 0; font-size:0.85em;">Short description of features and use case.</p>
+      <table class="spec">
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>Temperature Range</td><td>-20°C to +150°C</td></tr>
+        <tr><td>Thickness</td><td>0.05–0.5mm</td></tr>
+        <tr><td>Certifications</td><td>ISO 9001, UL</td></tr>
+      </table>
+      <span class="static-btn">📥 Download Datasheet</span><br><br>
+      <span class="static-btn primary">💬 Enquire via WhatsApp</span>
+    </div>
+  </div>
+
+  <h2 class="sec">Industries This Product Serves</h2>
+  <div class="wf-box">Automotive &nbsp;|&nbsp; Aerospace &nbsp;|&nbsp; Electrical &nbsp;|&nbsp; Construction</div>
+
+  <h2 class="sec">Related Products</h2>
+  <div class="grid4">
+    <div class="wf-box" style="text-align:center;">Related Product 1</div>
+    <div class="wf-box" style="text-align:center;">Related Product 2</div>
+    <div class="wf-box" style="text-align:center;">Related Product 3</div>
+    <div class="wf-box" style="text-align:center;">Related Product 4</div>
+  </div>
+
+  <h2 class="sec">Enquiry CTA</h2>
+  <div class="wf-box hero" style="min-height:80px;">
+    <div>Ready to Order or Need More Information?</div>
+    <div><span class="static-btn primary">💬 Enquire via WhatsApp</span> &nbsp;<span class="static-btn">☎️ Call Sales Team</span></div>
+  </div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+<!-- ============== 7. BLOG LISTING ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 7 / 9</div>
+  <div class="page-title">Blog — Listing Page</div>
+  <div class="page-sub">Nav tab active: Blog</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab">Products</div><div class="nav-tab active">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="wf-box hero" style="min-height:70px;"><div style="font-weight:bold;">Insights &amp; Resources</div></div>
+
+  <h2 class="sec">Category Filter (optional)</h2>
+  <div class="wf-box">
+    <span class="static-btn primary">All</span> &nbsp;
+    <span class="static-btn">Applications</span> &nbsp;
+    <span class="static-btn">Industry Trends</span> &nbsp;
+    <span class="static-btn">Case Studies</span> &nbsp;
+    <span class="static-btn">How-To Guides</span>
+  </div>
+  <div class="note">Open item: Category filter is optional per the brief — confirm if needed.</div>
+
+  <h2 class="sec">Blog Post Grid</h2>
+  <div class="grid2">
+    <div class="wf-box"><div class="placeholder-img" style="min-height:90px;">Featured Image</div><h4 style="margin-top:6px; font-size:0.9em;">Blog Post Title Here</h4></div>
+    <div class="wf-box"><div class="placeholder-img" style="min-height:90px;">Featured Image</div><h4 style="margin-top:6px; font-size:0.9em;">Blog Post Title Here</h4></div>
+    <div class="wf-box"><div class="placeholder-img" style="min-height:90px;">Featured Image</div><h4 style="margin-top:6px; font-size:0.9em;">Blog Post Title Here</h4></div>
+    <div class="wf-box"><div class="placeholder-img" style="min-height:90px;">Featured Image</div><h4 style="margin-top:6px; font-size:0.9em;">Blog Post Title Here</h4></div>
+  </div>
+
+  <h2 class="sec">Pagination</h2>
+  <div class="wf-box" style="text-align:center;">
+    <span class="static-btn">◀ 1</span><span class="static-btn">2</span><span class="static-btn">3</span><span class="static-btn">▶</span>
+  </div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+<!-- ============== 8. BLOG POST TEMPLATE ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 8 / 9</div>
+  <div class="page-title">Blog — Post Template</div>
+  <div class="page-sub">Nav tab active: Blog</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab">Products</div><div class="nav-tab active">Blog</div><div class="nav-tab">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="breadcrumb">Home &gt; Blog &gt; Post Title</div>
+  <h2 style="margin-bottom:8px; font-size:1.1em;">Complete Blog Post Title Goes Here</h2>
+  <div style="font-size:0.8em; color:#999; margin-bottom:8px;">Published on June 15, 2026 | By Author Name | 5 min read</div>
+  <div class="placeholder-img" style="min-height:140px;">Featured Image</div>
+
+  <h2 class="sec">Article Body</h2>
+  <div class="wf-box text-lines"><span></span><span></span><span></span></div>
+
+  <h2 class="sec">Author Info (optional)</h2>
+  <div class="wf-box" style="display:flex; gap:12px; align-items:center;">
+    <div class="placeholder-img" style="width:55px; min-height:55px; border-radius:50%;">Photo</div>
+    <div><b>Author Name</b><br><span style="font-size:0.8em; color:#888;">Technical Director</span></div>
+  </div>
+
+  <h2 class="sec">Related Posts</h2>
+  <div class="grid3">
+    <div class="wf-box">Related Post 1</div><div class="wf-box">Related Post 2</div><div class="wf-box">Related Post 3</div>
+  </div>
+
+  <h2 class="sec">CTA Block</h2>
+  <div class="wf-box hero" style="min-height:80px;">
+    <div>Have a question about our products?</div>
+    <div><span class="static-btn primary">Contact Our Team</span> &nbsp;<span class="static-btn">Explore Products</span></div>
+  </div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+<!-- ============== 9. CONTACT ============== -->
+<div class="page-block">
+  <div class="page-num">PAGE 9 / 9</div>
+  <div class="page-title">Contact Us</div>
+  <div class="page-sub">Nav tab active: Contact</div>
+
+  <div class="nav-bar">
+    <div class="logo">LOGO</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Home</div><div class="nav-tab">About</div><div class="nav-tab">Infrastructure</div>
+      <div class="nav-tab">Quality &amp; Certs</div><div class="nav-tab">Products</div><div class="nav-tab">Blog</div><div class="nav-tab active">Contact</div>
+    </div>
+    <div class="nav-icons">
+      <div class="lang-toggle"><div class="lang-opt active">EN</div><div class="lang-opt">हिं</div></div>
+      <div>💬 WhatsApp</div>
+    </div>
+  </div>
+
+  <div class="wf-box hero" style="min-height:70px;"><div style="font-weight:bold;">Get in Touch</div></div>
+
+  <div class="grid2">
+    <div class="wf-box">
+      <div class="wf-label">Contact Form</div>
+      <div>Name *</div><div class="placeholder-img" style="min-height:28px; margin-bottom:6px;">input field</div>
+      <div>Email *</div><div class="placeholder-img" style="min-height:28px; margin-bottom:6px;">input field</div>
+      <div>Phone</div><div class="placeholder-img" style="min-height:28px; margin-bottom:6px;">input field</div>
+      <div>Message *</div><div class="placeholder-img" style="min-height:45px; margin-bottom:6px;">textarea</div>
+      <span class="static-btn primary">Send Message</span>
+      <div class="note">Open item: Optional Industry dropdown — confirm with client.</div>
+    </div>
+    <div>
+      <div class="wf-box"><div class="placeholder-img" style="min-height:120px;">Google Maps Embed</div></div>
+      <div class="wf-box" style="margin-top:8px;">
+        <div><b>Address:</b> Plot 123, Thane, Mumbai</div>
+        <div><b>Phone:</b> +91-89-89637070</div>
+        <div><b>Email:</b> info@deontapes.com</div>
+      </div>
+      <div class="wf-box" style="margin-top:8px; text-align:center;">
+        <span class="static-btn primary">💬 Open WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="wf-footer"><div class="wf-label" style="color:#999;">Footer (same on every page)</div></footer>
+</div>
+
+</body>
+</html>
