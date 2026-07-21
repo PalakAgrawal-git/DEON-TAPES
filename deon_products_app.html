@@ -147,11 +147,12 @@ img{max-width:100%;display:block}a{color:inherit;text-decoration:none}button{fon
 .rule.in i{transform:scaleX(1)}
 .grid .card{animation:cardIn .38s cubic-bezier(.2,.7,.2,1) both}
 @keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.pmain{animation:floatBob 3.4s ease-in-out infinite}
-@keyframes floatBob{
-  0%{transform:translateY(0);box-shadow:0 14px 24px -14px rgba(20,10,10,.28)}
-  50%{transform:translateY(-18px);box-shadow:0 34px 40px -16px rgba(20,10,10,.18)}
-  100%{transform:translateY(0);box-shadow:0 14px 24px -14px rgba(20,10,10,.28)}}
+.pmain{animation:floatDown 3.8s ease-in-out infinite}
+@keyframes floatDown{
+  0%,100%{transform:translateY(0);box-shadow:0 14px 24px -14px rgba(20,10,10,.20)}
+  50%{transform:translateY(16px);box-shadow:0 8px 18px -12px rgba(20,10,10,.30)}}
+.pinfo{animation:floatUp 3.8s ease-in-out infinite;will-change:transform}
+@keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 .cta{position:relative;background:var(--red);color:#fff;overflow:hidden}.cta::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,var(--red-deep),var(--red))}
 .cta-in{position:relative;max-width:var(--maxw);margin:0 auto;padding:60px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:24px}
 .cta h2{font-family:'Barlow Condensed';text-transform:uppercase;font-weight:800;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:.98;color:#fff;margin:0;max-width:20ch}
