@@ -121,7 +121,9 @@ a{color:inherit;text-decoration:none}
 /* hero */
 .hero{position:relative;background:#0b0808;color:#fff;overflow:hidden}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:grayscale(.15) contrast(1.03)}
+  filter:grayscale(.15) contrast(1.03);transform-origin:62% 42%;
+  animation:kenburns 20s ease-out forwards;will-change:transform}
+@keyframes kenburns{from{transform:scale(1.08)}to{transform:scale(1)}}
 .hero-scrim{position:absolute;inset:0;
   background:linear-gradient(105deg,var(--hero-scrim) 0%,var(--hero-scrim) 42%,rgba(15,10,10,.30) 100%)}
 .hero-in{position:relative;max-width:var(--maxw);margin:0 auto;padding:92px 28px 104px}
@@ -150,6 +152,29 @@ a{color:inherit;text-decoration:none}
   font-size:1.25rem;letter-spacing:.14em;padding:0 26px}
 .tape span i{opacity:.55;font-style:normal;padding-left:26px}
 @keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* hero entrance sequence */
+.hero-in>*{opacity:0;transform:translateY(20px);animation:heroIn .75s cubic-bezier(.2,.7,.2,1) both}
+.hero-in>*:nth-child(1){animation-delay:.15s}
+.hero-in>*:nth-child(2){animation-delay:.28s}
+.hero-in>*:nth-child(3){animation-delay:.41s}
+.hero-in>*:nth-child(4){animation-delay:.54s}
+.hero-in>*:nth-child(5){animation-delay:.67s}
+@keyframes heroIn{to{opacity:1;transform:none}}
+
+/* nav shrink on scroll */
+.nav{transition:box-shadow .3s ease,background .3s ease}
+.nav-in{transition:padding .3s ease}
+.nav.scrolled{box-shadow:0 4px 20px rgba(20,10,10,.10)}
+.nav.scrolled .nav-in{padding-top:9px;padding-bottom:9px}
+.nav .logo img{transition:height .3s ease}
+.nav.scrolled .logo img{height:32px}
+
+/* tape-line divider (draws across on scroll) */
+.rule{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.rule i{display:block;height:3px;border-radius:3px;background:var(--red);
+  transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.6,0,.2,1)}
+.rule.in i{transform:scaleX(1)}
 
 /* section shell */
 .section{padding:84px 0}
@@ -270,6 +295,8 @@ a{color:inherit;text-decoration:none}
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   .reveal{opacity:1;transform:none}
+  .hero-in>*{opacity:1;transform:none}
+  .rule i{transform:none}
 }
 </style>
 
@@ -350,12 +377,14 @@ a{color:inherit;text-decoration:none}
         </div>
       </section>
 
+      <div class="rule" style="padding-top:8px;padding-bottom:8px"><i></i></div>
+
       <!-- STATS -->
       <section class="stats">
         <div class="stats-in reveal">
-          <div class="stat"><div class="num tnum">51<em>M+</em></div><div class="lbl">sqm / month production capacity</div></div>
-          <div class="stat"><div class="num tnum">200<em>+</em></div><div class="lbl">OEM brands supplied</div></div>
-          <div class="stat"><div class="num tnum">02</div><div class="lbl">manufacturing units — Baroda &amp; Silvasa</div></div>
+          <div class="stat"><div class="num tnum"><span class="count" data-to="51">0</span><em>M+</em></div><div class="lbl">sqm / month production capacity</div></div>
+          <div class="stat"><div class="num tnum"><span class="count" data-to="200">0</span><em>+</em></div><div class="lbl">OEM brands supplied</div></div>
+          <div class="stat"><div class="num tnum"><span class="count" data-to="2" data-pad="2">0</span></div><div class="lbl">manufacturing units — Baroda &amp; Silvasa</div></div>
           <div class="stat"><div class="num">ISO</div><div class="lbl">9001:2015 certified — quality at every stage</div></div>
         </div>
       </section>
@@ -407,6 +436,8 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
       </section>
+
+      <div class="rule" style="padding-top:8px;padding-bottom:8px"><i></i></div>
 
       <!-- CERTS -->
       <section class="section alt">
@@ -463,9 +494,36 @@ a{color:inherit;text-decoration:none}
 
 <script>
 (function(){
-  var els=document.querySelectorAll('.reveal');
-  if(!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});return;}
-  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{threshold:.12});
-  els.forEach(function(e){io.observe(e)});
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // scroll reveal + tape-line dividers
+  var els=document.querySelectorAll('.reveal,.rule');
+  if(!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});}
+  else{
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{threshold:.12});
+    els.forEach(function(e){io.observe(e)});
+  }
+
+  // nav shrink on scroll
+  var nav=document.querySelector('.nav');
+  function onScroll(){ if(nav) nav.classList.toggle('scrolled', window.scrollY>40); }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // animated stat counters
+  function runCount(el){
+    var to=+el.getAttribute('data-to'), pad=+(el.getAttribute('data-pad')||0);
+    if(reduce){ el.textContent = pad?String(to).padStart(pad,'0'):to; return; }
+    var start=null, dur=1400;
+    function step(ts){ start=start||ts; var p=Math.min((ts-start)/dur,1);
+      var e=1-Math.pow(1-p,3), v=Math.round(e*to);
+      el.textContent = pad?String(v).padStart(pad,'0'):v;
+      if(p<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  var counts=document.querySelectorAll('.count');
+  if('IntersectionObserver'in window){
+    var co=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){runCount(x.target);co.unobserve(x.target);}})},{threshold:.6});
+    counts.forEach(function(c){co.observe(c)});
+  } else counts.forEach(runCount);
 })();
 </script>

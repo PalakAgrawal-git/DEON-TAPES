@@ -136,6 +136,15 @@ img{max-width:100%;display:block}a{color:inherit;text-decoration:none}button{fon
 .tape-in{overflow:hidden;white-space:nowrap;padding:13px 0}.tape-track{display:inline-block;animation:march 30s linear infinite}
 .tape span{font-family:'Barlow Condensed';text-transform:uppercase;font-weight:800;font-size:1.2rem;letter-spacing:.14em;padding:0 26px}.tape span i{opacity:.55;font-style:normal;padding-left:26px}
 @keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.nav{transition:box-shadow .3s ease}.nav-in{transition:padding .3s ease}
+.nav.scrolled{box-shadow:0 4px 20px rgba(20,10,10,.10)}
+.nav.scrolled .nav-in{padding-top:9px;padding-bottom:9px}
+.nav .logo img{transition:height .3s ease}.nav.scrolled .logo img{height:32px}
+.rule{max-width:var(--maxw);margin:0 auto;padding:8px 28px}
+.rule i{display:block;height:3px;border-radius:3px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.6,0,.2,1)}
+.rule.in i{transform:scaleX(1)}
+.grid .card{animation:cardIn .38s cubic-bezier(.2,.7,.2,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .cta{position:relative;background:var(--red);color:#fff;overflow:hidden}.cta::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,var(--red-deep),var(--red))}
 .cta-in{position:relative;max-width:var(--maxw);margin:0 auto;padding:60px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:24px}
 .cta h2{font-family:'Barlow Condensed';text-transform:uppercase;font-weight:800;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:.98;color:#fff;margin:0;max-width:20ch}
@@ -152,7 +161,7 @@ img{max-width:100%;display:block}a{color:inherit;text-decoration:none}button{fon
 :focus-visible{outline:3px solid var(--red);outline-offset:2px;border-radius:3px}
 @media (max-width:900px){.grid,.rel{grid-template-columns:repeat(2,1fr)}.phero{grid-template-columns:1fr;gap:26px}.two{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr 1fr}.menu,.wa{display:none}.filters{top:69px}}
 @media (max-width:560px){.grid,.rel{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rule i{transform:none}}
 </style>
 
 <div class="review">
@@ -178,9 +187,9 @@ img{max-width:100%;display:block}a{color:inherit;text-decoration:none}button{fon
           <h1>Industrial tapes for every application</h1>
           <p>Electrical insulation, construction, bonding and packaging tapes — engineered, tested and manufactured in-house across two units. Filter by category to explore all 24 products.</p>
           <div class="kpis">
-            <div class="kpi"><b class="tnum">24</b><span>Products</span></div>
-            <div class="kpi"><b class="tnum">4</b><span>Categories</span></div>
-            <div class="kpi"><b class="tnum">51<em>M+</em></b><span>sqm / month</span></div>
+            <div class="kpi"><b class="tnum"><span class="count" data-to="24">0</span></b><span>Products</span></div>
+            <div class="kpi"><b class="tnum"><span class="count" data-to="4">0</span></b><span>Categories</span></div>
+            <div class="kpi"><b class="tnum"><span class="count" data-to="51">0</span><em>M+</em></b><span>sqm / month</span></div>
             <div class="kpi"><b>ASTM</b><span>D1000 tested</span></div>
           </div>
         </div></header>
@@ -192,6 +201,7 @@ img{max-width:100%;display:block}a{color:inherit;text-decoration:none}button{fon
       <!-- DETAIL VIEW -->
       <div id="view-detail" class="hidden"></div>
 
+      <div class="rule"><i></i></div>
       <!-- shared CTA + footer -->
       <section class="cta"><div class="cta-in">
         <div><h2>Need a tape for your line?</h2><p>Send us your specs and volumes — we'll match the product and quote fast.</p></div>
@@ -230,9 +240,9 @@ function setFilter(g){active=g;renderFilters();renderGrid()}
 function filterTo(g){showIndex();setFilter(g)}
 function renderGrid(){
   var list = active==="All"?PRODUCTS:PRODUCTS.filter(function(p){return p.group===active});
-  document.getElementById('grid').innerHTML = list.map(function(p){
+  document.getElementById('grid').innerHTML = list.map(function(p,idx){
     var i = PRODUCTS.indexOf(p);
-    return '<div class="card" onclick="showDetail('+i+')">'+
+    return '<div class="card" style="animation-delay:'+Math.min(idx*45,540)+'ms" onclick="showDetail('+i+')">'+
       '<div class="ph"><img loading="lazy" src="'+p.img+'" alt="'+esc(p.name)+'"></div>'+
       '<div class="body"><div class="grp">'+esc(p.group)+'</div>'+
       '<h3>'+esc(p.name)+'</h3><div class="pcode">Deon® '+esc(p.code)+'</div>'+
@@ -313,4 +323,31 @@ function showIndex(){
   window.scrollTo(0,0);
 }
 renderFilters();renderGrid();
+
+// tape-line dividers
+(function(){var rs=document.querySelectorAll('.rule');
+  if('IntersectionObserver'in window){var ro=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');ro.unobserve(x.target);}})},{threshold:.4});
+  rs.forEach(function(r){ro.observe(r)});} else rs.forEach(function(r){r.classList.add('in')});})();
+
+// nav shrink
+var _nav=document.querySelector('.nav');
+function _onScroll(){ if(_nav) _nav.classList.toggle('scrolled', window.scrollY>40); }
+window.addEventListener('scroll',_onScroll,{passive:true}); _onScroll();
+
+// animated KPI counters
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function run(el){
+    var to=+el.getAttribute('data-to');
+    if(reduce){el.textContent=to;return;}
+    var s=null,dur=1300;
+    function step(ts){s=s||ts;var p=Math.min((ts-s)/dur,1);el.textContent=Math.round((1-Math.pow(1-p,3))*to);if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  var cs=document.querySelectorAll('.count');
+  if('IntersectionObserver'in window){
+    var o=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){run(x.target);o.unobserve(x.target);}})},{threshold:.5});
+    cs.forEach(function(c){o.observe(c)});
+  } else cs.forEach(run);
+})();
 </script>
