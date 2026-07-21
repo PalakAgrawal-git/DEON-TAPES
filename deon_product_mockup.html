@@ -206,6 +206,31 @@ a{color:inherit;text-decoration:none}
   transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.6,0,.2,1)}
 .rule.in i{transform:scaleX(1)}
 
+/* product-hero entrance: gallery from left, info from right */
+.phero .gallery.reveal{opacity:0;transform:translate3d(-28px,0,0);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.phero .pinfo.reveal{opacity:0;transform:translate3d(28px,0,0);transition:opacity .7s ease .05s,transform .7s cubic-bezier(.2,.7,.2,1) .05s}
+.phero .reveal.in{opacity:1;transform:none}
+
+/* main image hover magnify */
+.gallery .main{cursor:zoom-in}
+.gallery .main img{transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+.gallery .main:hover img{transform:scale(1.14)}
+.thumbs button{transition:border-color .2s,transform .2s}
+.thumbs button:hover{transform:translateY(-2px)}
+
+/* staggered list items */
+.card-list li{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.reveal.in .card-list li{opacity:1;transform:none}
+.reveal.in .card-list li:nth-child(1){transition-delay:.06s}
+.reveal.in .card-list li:nth-child(2){transition-delay:.14s}
+.reveal.in .card-list li:nth-child(3){transition-delay:.22s}
+.reveal.in .card-list li:nth-child(4){transition-delay:.30s}
+
+/* spec rows sweep in */
+.spec-wrap.reveal tbody tr{opacity:0;transform:translateX(-10px);transition:opacity .45s ease,transform .45s ease}
+.spec-wrap.reveal.in tbody tr{opacity:1;transform:none}
+.spec-wrap.reveal.in tbody tr:nth-child(n){transition-delay:calc(.03s * var(--i,0))}
+
 /* CTA */
 .cta{position:relative;background:var(--red);color:#fff;overflow:hidden}
 .cta::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,var(--red-deep),var(--red))}
@@ -241,7 +266,8 @@ a{color:inherit;text-decoration:none}
   .hl{grid-template-columns:1fr}.actions{grid-template-columns:1fr}
   .pgrid,.foot-grid{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.rule i{transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.rule i{transform:none}
+  .phero .gallery.reveal,.phero .pinfo.reveal{opacity:1;transform:none}.card-list li{opacity:1;transform:none}.spec-wrap tbody tr{opacity:1;transform:none}}
 </style>
 
 <div class="review">
@@ -468,5 +494,8 @@ a{color:inherit;text-decoration:none}
   var nav=document.querySelector('.nav');
   function onScroll(){ if(nav) nav.classList.toggle('scrolled', window.scrollY>40); }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // index spec rows for staggered sweep
+  document.querySelectorAll('.spec tbody tr').forEach(function(tr,i){tr.style.setProperty('--i',i);});
 })();
 </script>
