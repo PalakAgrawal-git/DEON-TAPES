@@ -1,263 +1,316 @@
-<title>Deon — Certifications Page Wireframe</title>
+<title>Deon — Certifications Wireframe</title>
 <style>
 :root{
-  --ink:#2b2b2b;--line:#c9c9c9;--line-2:#b3b3b3;--fill:#ededed;--fill-2:#f6f6f6;
-  --box:#e2e2e2;--muted:#8a8a8a;--page:#f0f0ef;--paper:#ffffff;--accent:#7a7a7a;--pin:#444;
+  --ink:#2b2b2b;--soft:#5f5f5f;--muted:#8c8c8c;--line:#d2d2d2;--line-2:#bcbcbc;
+  --fill:#eeeeee;--fill-2:#f7f7f6;--box:#e0e0e0;--paper:#ffffff;--page:#e9e8e6;
+  --accent:#c0392b;--accent-soft:#e7c9c4;--pin:#3a3a3a;--stage:#dedcd9;
   --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Consolas,monospace;
   --sans:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 18px 50px rgba(0,0,0,.12);
 }
-@media (prefers-color-scheme:dark){:root{--ink:#e6e6e6;--line:#3a3a3a;--line-2:#4a4a4a;--fill:#242424;--fill-2:#1d1d1d;--box:#2c2c2c;--muted:#9a9a9a;--page:#141414;--paper:#1a1a1a;--accent:#9a9a9a;--pin:#c9c9c9}}
-:root[data-theme="dark"]{--ink:#e6e6e6;--line:#3a3a3a;--line-2:#4a4a4a;--fill:#242424;--fill-2:#1d1d1d;--box:#2c2c2c;--muted:#9a9a9a;--page:#141414;--paper:#1a1a1a;--accent:#9a9a9a;--pin:#c9c9c9}
-:root[data-theme="light"]{--ink:#2b2b2b;--line:#c9c9c9;--line-2:#b3b3b3;--fill:#ededed;--fill-2:#f6f6f6;--box:#e2e2e2;--muted:#8a8a8a;--page:#f0f0ef;--paper:#fff;--accent:#7a7a7a;--pin:#444}
+@media (prefers-color-scheme:dark){:root{--ink:#e8e8e8;--soft:#bdbdbd;--muted:#9a9a9a;--line:#383838;--line-2:#4a4a4a;--fill:#242424;--fill-2:#1e1e1e;--box:#2e2e2e;--paper:#191919;--page:#101010;--accent:#e05c4c;--accent-soft:#4a2a25;--pin:#d4d4d4;--stage:#161616;--shadow:0 1px 2px rgba(0,0,0,.5),0 22px 55px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--ink:#e8e8e8;--soft:#bdbdbd;--muted:#9a9a9a;--line:#383838;--line-2:#4a4a4a;--fill:#242424;--fill-2:#1e1e1e;--box:#2e2e2e;--paper:#191919;--page:#101010;--accent:#e05c4c;--accent-soft:#4a2a25;--pin:#d4d4d4;--stage:#161616;--shadow:0 1px 2px rgba(0,0,0,.5),0 22px 55px rgba(0,0,0,.6)}
+:root[data-theme="light"]{--ink:#2b2b2b;--soft:#5f5f5f;--muted:#8c8c8c;--line:#d2d2d2;--line-2:#bcbcbc;--fill:#eeeeee;--fill-2:#f7f7f6;--box:#e0e0e0;--paper:#fff;--page:#e9e8e6;--accent:#c0392b;--accent-soft:#e7c9c4;--pin:#3a3a3a;--stage:#dedcd9;--shadow:0 1px 2px rgba(0,0,0,.05),0 18px 50px rgba(0,0,0,.12)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--page);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
-.wrap{max-width:1180px;margin:0 auto;padding:30px 22px 70px}
+button{font-family:inherit;cursor:pointer}
 
-/* doc header */
-.doc-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;margin-bottom:6px}
-.doc-head h1{font-family:var(--mono);font-size:1.05rem;font-weight:600;letter-spacing:.02em;margin:0;text-transform:uppercase}
-.doc-head .tag{font-family:var(--mono);font-size:.72rem;border:1px solid var(--line-2);border-radius:4px;padding:3px 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.doc-head .meta{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
-.doc-sub{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin:0 0 26px}
+/* ---------- presentation shell ---------- */
+.shell{max-width:1280px;margin:0 auto;padding:26px 22px 60px}
+.topbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-bottom:22px}
+.brand{display:flex;flex-direction:column;gap:3px}
+.brand .t{font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:1rem}
+.brand .s{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.controls{margin-left:auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.seg{display:inline-flex;background:var(--fill);border:1px solid var(--line);border-radius:8px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--soft);font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;padding:7px 13px;border-radius:6px;display:inline-flex;align-items:center;gap:6px;transition:all .18s}
+.seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.72rem;color:var(--soft);text-transform:uppercase;letter-spacing:.06em;
+  background:var(--fill);border:1px solid var(--line);border-radius:8px;padding:8px 12px;transition:all .18s}
+.toggle.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.toggle .dot{width:9px;height:9px;border-radius:50%;background:var(--line-2);transition:background .18s}
+.toggle.on .dot{background:#fff}
 
-/* legend */
-.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--mono);font-size:.72rem;color:var(--muted);
-  border:1px dashed var(--line-2);border-radius:8px;padding:12px 16px;margin-bottom:30px;background:var(--fill-2)}
-.legend b{color:var(--ink)}
-.legend .k{display:inline-flex;align-items:center;gap:7px}
-.swatch{width:22px;height:12px;border:1px solid var(--line-2);border-radius:2px;display:inline-block}
-.swatch.box{background:var(--box)}.swatch.img{background:repeating-linear-gradient(45deg,var(--fill),var(--fill) 5px,var(--box) 5px,var(--box) 10px)}
-.pinlegend{width:18px;height:18px;border-radius:50%;background:var(--pin);color:var(--page);display:inline-grid;place-items:center;font-family:var(--mono);font-size:.62rem;font-weight:700}
+/* ---------- stage + device ---------- */
+.workspace{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start}
+.stage{background:var(--stage);border:1px solid var(--line);border-radius:16px;padding:30px;overflow-x:auto;
+  background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:22px 22px}
+.device{margin:0 auto;transition:max-width .4s cubic-bezier(.4,0,.15,1);will-change:max-width}
+.device.desktop{max-width:1040px}
+.device.tablet{max-width:760px}
+.device.mobile{max-width:380px}
+.chrome-wrap{background:var(--paper);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.mobile .chrome-wrap{border-radius:30px;border-width:8px;border-color:var(--ink);position:relative}
+.chrome{display:flex;align-items:center;gap:12px;padding:9px 14px;background:var(--fill);border-bottom:1px solid var(--line)}
+.mobile .chrome{display:none}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--line-2)}
+.url{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.notch{display:none}
+.mobile .notch{display:block;height:22px;background:var(--paper);position:relative}
+.mobile .notch::after{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);width:90px;height:6px;border-radius:6px;background:var(--box)}
 
-/* frame label */
-.frame-label{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:36px 0 10px;display:flex;align-items:center;gap:10px}
-.frame-label::after{content:"";flex:1;height:1px;background:var(--line)}
-
-/* artboard */
-.board{border:1.5px solid var(--line-2);border-radius:10px;background:var(--paper);overflow:hidden;position:relative}
-.board.mobile{max-width:390px}
-
-/* wireframe primitives */
-.blk{border:1px solid var(--line);background:var(--fill-2);position:relative}
-.row{display:flex;align-items:center}
+/* ---------- wireframe primitives ---------- */
+.canvas{background:var(--paper)}
 .pad{padding:22px 26px}
-.mobile .pad{padding:16px 16px}
-.bar{background:var(--box);border-radius:3px}
+.mobile .pad{padding:15px 15px}
 .line{height:9px;background:var(--box);border-radius:3px}
-.line.s{width:40%}.line.m{width:65%}.line.l{width:85%}.line.xs{width:25%}
-.h-bar{height:26px;background:var(--box);border-radius:4px}
-.h-bar.big{height:40px}
-.label{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.label.abs{position:absolute;top:7px;left:9px;background:var(--paper);padding:1px 5px;border:1px solid var(--line);border-radius:3px;z-index:2}
+.line.xs{width:25%}.line.s{width:40%}.line.m{width:65%}.line.l{width:85%}
+.hbar{height:24px;background:var(--box);border-radius:4px}.hbar.big{height:38px}
+.label{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .stack{display:flex;flex-direction:column;gap:9px}
-.imgbox{background:repeating-linear-gradient(45deg,var(--fill),var(--fill) 6px,var(--box) 6px,var(--box) 12px);
-  border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-family:var(--mono);font-size:.7rem;border-radius:4px}
-.btn{display:inline-flex;align-items:center;justify-content:center;border:1.5px solid var(--line-2);border-radius:5px;
-  background:var(--box);font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);padding:9px 16px}
-.btn.solid{background:var(--accent);color:var(--page);border-color:var(--accent)}
-.pill{border:1px solid var(--line-2);border-radius:40px;padding:5px 12px;font-family:var(--mono);font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.logo-box{width:112px;height:32px;background:var(--box);border:1px solid var(--line-2);border-radius:4px;display:grid;place-items:center;font-family:var(--mono);font-size:.62rem;color:var(--muted)}
+.mobile .logo-box{width:86px;height:26px}
+.pill{border:1px solid var(--line-2);border-radius:40px;padding:5px 12px;font-family:var(--mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1.5px solid var(--line-2);border-radius:6px;background:var(--box);
+  font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);padding:9px 15px;transition:transform .12s,background .18s,border-color .18s}
+.btn:hover{transform:translateY(-1px);border-color:var(--accent);color:var(--accent)}
+.btn.solid{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.solid:hover{filter:brightness(1.06);color:#fff}
+.btn.solid.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.0)}50%{box-shadow:0 0 0 6px rgba(192,57,43,.14)}}
 
-/* pin */
-.pin{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--pin);color:var(--page);
-  display:grid;place-items:center;font-family:var(--mono);font-size:.66rem;font-weight:700;z-index:5;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+/* interactive block wrapper */
+.b{position:relative;transition:box-shadow .2s,background .2s}
+.b.hl{box-shadow:inset 0 0 0 2px var(--accent)}
+.pin{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:50%;background:var(--pin);color:var(--page);
+  display:none;place-items:center;font-family:var(--mono);font-size:.66rem;font-weight:700;z-index:6;cursor:pointer;
+  box-shadow:0 1px 4px rgba(0,0,0,.3);transition:transform .15s,background .18s}
+.show-anno .pin{display:grid}
+.pin:hover{transform:scale(1.15)}
+.pin.sel{background:var(--accent);color:#fff;transform:scale(1.15)}
 
-/* sections */
-.wnav{justify-content:space-between;gap:16px;border-bottom:1px solid var(--line)}
-.wnav .navlinks{display:flex;gap:14px;flex-wrap:wrap}
-.wnav .navlinks .line{width:52px;height:8px}
-.logo-box{width:120px;height:34px;background:var(--box);border:1px solid var(--line-2);border-radius:4px;display:grid;place-items:center;font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+/* nav */
+.wnav{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line)}
+.navlinks{display:flex;gap:13px;flex-wrap:wrap}
+.navlinks .line{width:52px;height:8px;transition:background .18s}
+.wnav:hover .navlinks .line:nth-child(3){background:var(--accent-soft)}
+.hidepart{display:flex;gap:13px}
+.mobile .hidepart,.tablet .navlinks{display:none}
+.burger{display:none;font-family:var(--mono);font-size:.9rem}
+.mobile .burger,.tablet .burger{display:inline-flex}
+
+/* breadcrumb */
 .crumb{padding:10px 26px;border-bottom:1px solid var(--line);background:var(--fill-2)}
-.mobile .crumb{padding:8px 16px}
+.mobile .crumb{padding:8px 15px}
 
-.hero{padding:40px 26px;background:var(--fill-2);border-bottom:1px solid var(--line);position:relative}
-.mobile .hero{padding:26px 16px}
+/* hero */
+.hero{padding:40px 26px;background:var(--fill-2);border-bottom:1px solid var(--line)}
+.mobile .hero{padding:24px 15px}
 
-.grid-cert{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.mobile .grid-cert{grid-template-columns:1fr}
-.cert{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:18px;min-height:120px;display:flex;flex-direction:column;gap:9px;position:relative}
-.cert .badge{align-self:flex-start}
+/* cert grid */
+.gcert{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;transition:grid-template-columns .3s}
+.tablet .gcert{grid-template-columns:repeat(2,1fr)}
+.mobile .gcert{grid-template-columns:1fr}
+.cert{border:1px solid var(--line);background:var(--paper);border-radius:7px;padding:17px;min-height:118px;display:flex;flex-direction:column;gap:9px;transition:transform .18s,box-shadow .18s,border-color .18s}
+.cert:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.10);border-color:var(--line-2)}
+.cert.add{border-style:dashed;align-items:center;justify-content:center;text-align:center}
 
-.docrow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.mobile .docrow{grid-template-columns:1fr}
-.doccol{border:1px dashed var(--line-2);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:8px}
+/* docs */
+.gdoc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mobile .gdoc{grid-template-columns:1fr}
+.doccol{border:1px dashed var(--line-2);border-radius:7px;padding:15px;display:flex;flex-direction:column;gap:8px;transition:background .18s}
+.doccol:hover{background:var(--fill-2)}
 
-.cta{padding:34px 26px;background:var(--box);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  display:flex;flex-wrap:wrap;align-items:center;gap:16px;position:relative}
-.mobile .cta{padding:22px 16px}
+/* cta */
+.cta{padding:32px 26px;background:var(--box);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.mobile .cta{padding:22px 15px;flex-direction:column;align-items:stretch}
 
-.foot{padding:30px 26px;background:var(--fill);position:relative}
-.mobile .foot .footgrid{grid-template-columns:1fr 1fr}
-.footgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:20px}
-.footcol{display:flex;flex-direction:column;gap:7px}
-.foot-legal{display:flex;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+/* footer */
+.foot{padding:28px 26px;background:var(--fill)}
+.fgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:18px}
+.tablet .fgrid{grid-template-columns:1fr 1fr 1fr}
+.mobile .fgrid{grid-template-columns:1fr 1fr}
+.fcol{display:flex;flex-direction:column;gap:7px}
+.flegal{display:flex;gap:12px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line);flex-wrap:wrap}
 
-.section-note{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin:0 0 8px}
+/* ---------- annotation panel ---------- */
+.panel{position:sticky;top:16px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.panel h3{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px}
+.panel .hint{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin:0 0 14px}
+.notelist{display:flex;flex-direction:column;gap:6px;max-height:none}
+.note{display:flex;gap:11px;align-items:flex-start;padding:9px 10px;border-radius:9px;border:1px solid transparent;cursor:pointer;transition:background .16s,border-color .16s;text-align:left;background:transparent;width:100%}
+.note:hover{background:var(--fill-2)}
+.note.sel{background:var(--accent-soft);border-color:var(--accent)}
+.note .n{flex:none;width:20px;height:20px;border-radius:50%;background:var(--pin);color:var(--page);display:grid;place-items:center;font-family:var(--mono);font-size:.64rem;font-weight:700}
+.note.sel .n{background:var(--accent);color:#fff}
+.note .txt{font-size:.82rem}
+.note .txt b{font-weight:600}.note .txt span{color:var(--muted)}
+.legend{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px;font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+.legend .k{display:flex;align-items:center;gap:8px}
+.sw{width:22px;height:12px;border-radius:2px;border:1px solid var(--line-2);flex:none}
+.sw.box{background:var(--box)}.sw.card{background:var(--paper)}.sw.dash{background:var(--fill-2);border-style:dashed}
 
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
-@media (max-width:820px){.two-col{grid-template-columns:1fr}}
+.section-note{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin:0 0 8px}
 
-/* annotations list */
-.annos{margin-top:40px;border-top:1px solid var(--line);padding-top:22px}
-.annos h2{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 16px}
-.anno{display:flex;gap:12px;margin-bottom:12px;max-width:70ch}
-.anno .n{flex:none;width:20px;height:20px;border-radius:50%;background:var(--pin);color:var(--page);display:grid;place-items:center;font-family:var(--mono);font-size:.66rem;font-weight:700}
-.anno p{margin:0;font-size:.86rem;color:var(--ink)}
-.anno p b{font-weight:600}
-.anno p span{color:var(--muted)}
+@media (max-width:860px){
+  .workspace{grid-template-columns:1fr}
+  .panel{position:static}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
-<div class="wrap">
-  <div class="doc-head">
-    <h1>Certifications Page — Wireframe</h1>
-    <span class="tag">Low-fidelity</span>
-    <span class="meta">Deon Tapes · Quality &amp; Certifications · v1</span>
-  </div>
-  <p class="doc-sub">Structure &amp; layout only — no colour, type or imagery. Based on the reference certifications page.</p>
-
-  <div class="legend">
-    <span class="k"><span class="swatch box"></span> <b>Content block</b></span>
-    <span class="k"><span class="swatch img"></span> <b>Image / logo placeholder</b></span>
-    <span class="k"><span class="pinlegend">1</span> <b>Annotation</b> (see notes below)</span>
-    <span class="k">Grey bars = text lines / headings</span>
-  </div>
-
-  <!-- ===================== DESKTOP ===================== -->
-  <div class="frame-label">Desktop — 1180px</div>
-  <div class="board">
-
-    <!-- NAV -->
-    <div class="blk row wnav pad">
-      <div class="pin" style="top:8px;left:8px">1</div>
-      <div class="logo-box">LOGO</div>
-      <div class="navlinks">
-        <div class="line" style="width:46px"></div><div class="line" style="width:46px"></div>
-        <div class="line" style="width:70px"></div><div class="line" style="width:60px"></div>
-        <div class="line" style="width:120px"></div><div class="line" style="width:64px"></div>
-      </div>
-      <div class="row" style="gap:10px"><span class="pill">EN</span><span class="btn">Contact</span></div>
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <span class="t">Deon Tapes — Certifications Page</span>
+      <span class="s">Interactive wireframe · v2 · Vaelo Creative</span>
     </div>
-
-    <!-- BREADCRUMB -->
-    <div class="crumb"><div class="pin" style="top:6px;right:10px">2</div><span class="label">Home › Quality &amp; Certifications</span></div>
-
-    <!-- HERO -->
-    <div class="hero">
-      <div class="pin" style="top:8px;left:8px">3</div>
-      <div class="stack" style="max-width:640px">
-        <span class="label">Eyebrow — “Quality &amp; Certifications”</span>
-        <div class="h-bar big" style="width:90%"></div>
-        <div class="h-bar big" style="width:60%"></div>
-        <div style="height:6px"></div>
-        <div class="line l"></div><div class="line m"></div>
+    <div class="controls">
+      <div class="seg" id="devseg">
+        <button data-dev="desktop" class="on">▭ Desktop</button>
+        <button data-dev="tablet">▯ Tablet</button>
+        <button data-dev="mobile">▮ Mobile</button>
       </div>
-    </div>
-
-    <!-- CERT GRID -->
-    <div class="pad" style="position:relative">
-      <div class="pin" style="top:14px;left:8px">4</div>
-      <p class="section-note">SECTION · “Quality &amp; Compliance” — heading + intro paragraph</p>
-      <div class="h-bar" style="width:55%;margin-bottom:10px"></div>
-      <div class="line l" style="margin-bottom:4px"></div><div class="line m" style="margin-bottom:20px"></div>
-      <div class="grid-cert">
-        <div class="cert"><span class="pill badge">Certified</span><div class="h-bar" style="width:70%"></div><div class="line m"></div><div class="line xs"></div></div>
-        <div class="cert"><span class="pill badge">Certified</span><div class="h-bar" style="width:80%"></div><div class="line m"></div><div class="line xs"></div></div>
-        <div class="cert"><span class="pill badge">Certified</span><div class="h-bar" style="width:75%"></div><div class="line m"></div><div class="line xs"></div></div>
-        <div class="cert"><span class="pill badge">Certified</span><div class="h-bar" style="width:40%"></div><div class="line m"></div><div class="line xs"></div></div>
-        <div class="cert"><span class="pill badge">Certified</span><div class="h-bar" style="width:65%"></div><div class="line m"></div><div class="line xs"></div></div>
-        <div class="cert" style="border-style:dashed;justify-content:center;align-items:center"><span class="label">+ certificate cards<br>(ISO / UL / BIS …)</span></div>
-      </div>
-    </div>
-
-    <!-- DOCUMENTATION -->
-    <div class="pad" style="position:relative;background:var(--fill-2);border-top:1px solid var(--line)">
-      <div class="pin" style="top:14px;left:8px">5</div>
-      <p class="section-note">SECTION · “Documented &amp; audit-ready”</p>
-      <div class="h-bar" style="width:48%;margin-bottom:18px"></div>
-      <div class="docrow">
-        <div class="doccol"><div class="h-bar" style="width:60%"></div><span class="label">Per product</span><div class="line m"></div></div>
-        <div class="doccol"><div class="h-bar" style="width:55%"></div><span class="label">Per batch</span><div class="line m"></div></div>
-        <div class="doccol"><div class="h-bar" style="width:50%"></div><span class="label">On request</span><div class="line m"></div></div>
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="cta">
-      <div class="pin" style="top:8px;left:8px">6</div>
-      <div class="stack" style="flex:1;min-width:260px">
-        <div class="h-bar" style="width:45%"></div><div class="line m"></div>
-      </div>
-      <div class="row" style="gap:12px"><span class="btn solid">Request Documents</span><span class="btn">Knowledge Center</span></div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="foot">
-      <div class="pin" style="top:8px;left:8px">7</div>
-      <div class="footgrid">
-        <div class="footcol"><div class="logo-box" style="margin-bottom:6px">LOGO</div><div class="line l"></div><div class="line m"></div><span class="btn" style="margin-top:6px;align-self:flex-start">Contact Deon</span></div>
-        <div class="footcol"><span class="label">Products</span><div class="line s"></div><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
-        <div class="footcol"><span class="label">Markets</span><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
-        <div class="footcol"><span class="label">Company</span><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
-        <div class="footcol"><span class="label">Resources</span><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
-      </div>
-      <div class="foot-legal"><div class="line xs"></div><div class="line xs"></div><div class="line xs"></div><div class="line xs"></div></div>
+      <button class="toggle on" id="annoToggle"><span class="dot"></span> Annotations</button>
     </div>
   </div>
 
-  <!-- ===================== MOBILE ===================== -->
-  <div class="frame-label">Mobile — 390px</div>
-  <div class="board mobile">
-    <div class="blk row wnav pad" style="justify-content:space-between">
-      <div class="logo-box" style="width:88px;height:28px">LOGO</div>
-      <span class="btn" style="padding:7px 10px">☰ Menu</span>
-    </div>
-    <div class="crumb"><span class="label">Home › Certifications</span></div>
-    <div class="hero">
-      <div class="stack">
-        <span class="label">Eyebrow</span>
-        <div class="h-bar big" style="width:95%"></div><div class="h-bar big" style="width:70%"></div>
-        <div class="line l"></div><div class="line m"></div>
-      </div>
-    </div>
-    <div class="pad">
-      <p class="section-note">Quality &amp; Compliance</p>
-      <div class="h-bar" style="width:70%;margin-bottom:12px"></div>
-      <div class="grid-cert">
-        <div class="cert"><span class="pill badge">Certified</span><div class="h-bar" style="width:70%"></div><div class="line m"></div></div>
-        <div class="cert"><span class="pill badge">Certified</span><div class="h-bar" style="width:80%"></div><div class="line m"></div></div>
-        <div class="cert" style="border-style:dashed;align-items:center;justify-content:center;min-height:70px"><span class="label">+ more cards</span></div>
-      </div>
-    </div>
-    <div class="pad" style="background:var(--fill-2);border-top:1px solid var(--line)">
-      <p class="section-note">Documented &amp; audit-ready</p>
-      <div class="docrow">
-        <div class="doccol"><div class="h-bar" style="width:60%"></div><span class="label">Per product</span></div>
-        <div class="doccol"><div class="h-bar" style="width:55%"></div><span class="label">Per batch</span></div>
-        <div class="doccol"><div class="h-bar" style="width:50%"></div><span class="label">On request</span></div>
-      </div>
-    </div>
-    <div class="cta" style="flex-direction:column;align-items:stretch">
-      <div class="stack"><div class="h-bar" style="width:70%"></div><div class="line m"></div></div>
-      <span class="btn solid" style="margin-top:8px">Request Documents</span>
-    </div>
-    <div class="foot">
-      <div class="footgrid">
-        <div class="footcol"><div class="logo-box" style="width:80px;height:24px">LOGO</div><div class="line m"></div></div>
-        <div class="footcol"><span class="label">Products</span><div class="line s"></div><div class="line s"></div></div>
-        <div class="footcol"><span class="label">Company</span><div class="line s"></div><div class="line s"></div></div>
-        <div class="footcol"><span class="label">Resources</span><div class="line s"></div><div class="line s"></div></div>
-      </div>
-    </div>
-  </div>
+  <div class="workspace">
+    <!-- STAGE -->
+    <div class="stage">
+      <div class="device desktop show-anno" id="device">
+        <div class="chrome-wrap">
+          <div class="chrome"><div class="dots"><i></i><i></i><i></i></div>
+            <div class="url">deontapes.com/quality/certifications</div></div>
+          <div class="notch"></div>
+          <div class="canvas">
 
-  <!-- ANNOTATIONS -->
-  <div class="annos">
-    <h2>Annotations</h2>
-    <div class="anno"><span class="n">1</span><p><b>Sticky top nav.</b> Logo left; primary links (Tapes, Films, About, Career, Press, Quality &amp; Certifications, Markets ▾); language selector + Contact button right. <span>Collapses to a ☰ menu on mobile.</span></p></div>
-    <div class="anno"><span class="n">2</span><p><b>Breadcrumb.</b> Home › Quality &amp; Certifications, with the page tagline.</p></div>
-    <div class="anno"><span class="n">3</span><p><b>Hero.</b> Eyebrow label, large H1 (“Manufactured to recognised quality standards”), and a one-line intro naming the standards (ISO 9001 / 45001 / 14001, UL, BIS). <span>No hero image in the reference — text only.</span></p></div>
-    <div class="anno"><span class="n">4</span><p><b>Certification card grid.</b> One card per standard — ISO 9001:2015, ISO 45001:2018, ISO 14001:2015, UL, BIS · IS 7809. Each card: “Certified” badge, standard name, scope line, “Certificate available on request”. <span>3-up on desktop, 1-up on mobile.</span></p></div>
-    <div class="anno"><span class="n">5</span><p><b>Documentation block.</b> “Documented &amp; audit-ready” — three items: Datasheets (per product), Test reports (per batch), Samples (on request).</p></div>
-    <div class="anno"><span class="n">6</span><p><b>CTA band.</b> “Need documentation?” with a primary <b>Request Documents</b> button and a secondary Knowledge Center link.</p></div>
-    <div class="anno"><span class="n">7</span><p><b>Mega-footer.</b> Company blurb + Contact CTA, then link columns (Products, Markets, Company, Resources) and a legal row (Legal, Privacy, Terms, Accessibility, Sitemap) + “It’s Power-Strong”.</p></div>
+            <div class="b wnav pad" data-b="nav">
+              <div class="pin" data-p="1">1</div>
+              <div class="logo-box">LOGO</div>
+              <div class="navlinks">
+                <div class="line" style="width:44px"></div><div class="line" style="width:44px"></div>
+                <div class="line" style="width:120px"></div><div class="line" style="width:60px"></div>
+                <div class="line" style="width:60px"></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center">
+                <span class="pill">EN</span><span class="btn">Contact</span>
+                <span class="burger btn" style="padding:8px 11px">☰</span>
+              </div>
+            </div>
+
+            <div class="b crumb" data-b="crumb"><div class="pin" data-p="2">2</div><span class="label">Home › Quality &amp; Certifications</span></div>
+
+            <div class="b hero" data-b="hero">
+              <div class="pin" data-p="3">3</div>
+              <div class="stack" style="max-width:640px">
+                <span class="label">Eyebrow — “Quality &amp; Certifications”</span>
+                <div class="hbar big" style="width:90%"></div><div class="hbar big" style="width:58%"></div>
+                <div style="height:6px"></div><div class="line l"></div><div class="line m"></div>
+              </div>
+            </div>
+
+            <div class="b pad" data-b="certs">
+              <div class="pin" data-p="4">4</div>
+              <p class="section-note">SECTION · “Quality &amp; Compliance”</p>
+              <div class="hbar" style="width:52%;margin-bottom:10px"></div>
+              <div class="line l" style="margin-bottom:4px"></div><div class="line m" style="margin-bottom:18px"></div>
+              <div class="gcert">
+                <div class="cert"><span class="pill">Certified</span><div class="hbar" style="width:70%"></div><div class="line m"></div><div class="line xs"></div></div>
+                <div class="cert"><span class="pill">Certified</span><div class="hbar" style="width:82%"></div><div class="line m"></div><div class="line xs"></div></div>
+                <div class="cert"><span class="pill">Certified</span><div class="hbar" style="width:76%"></div><div class="line m"></div><div class="line xs"></div></div>
+                <div class="cert"><span class="pill">Certified</span><div class="hbar" style="width:38%"></div><div class="line m"></div><div class="line xs"></div></div>
+                <div class="cert"><span class="pill">Certified</span><div class="hbar" style="width:64%"></div><div class="line m"></div><div class="line xs"></div></div>
+                <div class="cert add"><span class="label">ISO · UL · BIS<br>one card per standard</span></div>
+              </div>
+            </div>
+
+            <div class="b pad" data-b="docs" style="background:var(--fill-2);border-top:1px solid var(--line)">
+              <div class="pin" data-p="5">5</div>
+              <p class="section-note">SECTION · “Documented &amp; audit-ready”</p>
+              <div class="hbar" style="width:46%;margin-bottom:16px"></div>
+              <div class="gdoc">
+                <div class="doccol"><div class="hbar" style="width:60%"></div><span class="label">Per product</span><div class="line m"></div></div>
+                <div class="doccol"><div class="hbar" style="width:55%"></div><span class="label">Per batch</span><div class="line m"></div></div>
+                <div class="doccol"><div class="hbar" style="width:50%"></div><span class="label">On request</span><div class="line m"></div></div>
+              </div>
+            </div>
+
+            <div class="b cta" data-b="cta">
+              <div class="pin" data-p="6">6</div>
+              <div class="stack" style="flex:1;min-width:240px"><div class="hbar" style="width:44%"></div><div class="line m"></div></div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap"><span class="btn solid pulse">Request Documents</span><span class="btn">Knowledge Center</span></div>
+            </div>
+
+            <div class="b foot" data-b="foot">
+              <div class="pin" data-p="7">7</div>
+              <div class="fgrid">
+                <div class="fcol"><div class="logo-box" style="margin-bottom:6px">LOGO</div><div class="line l"></div><div class="line m"></div><span class="btn" style="margin-top:6px;align-self:flex-start">Contact Deon</span></div>
+                <div class="fcol"><span class="label">Products</span><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
+                <div class="fcol"><span class="label">Markets</span><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
+                <div class="fcol"><span class="label">Company</span><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
+                <div class="fcol"><span class="label">Resources</span><div class="line s"></div><div class="line s"></div><div class="line s"></div></div>
+              </div>
+              <div class="flegal"><div class="line xs"></div><div class="line xs"></div><div class="line xs"></div><div class="line xs"></div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL -->
+    <div class="panel">
+      <h3>Annotations</h3>
+      <p class="hint">Click a numbered pin or a note to inspect a block.</p>
+      <div class="notelist" id="notelist"></div>
+      <div class="legend">
+        <div class="k"><span class="sw box"></span> Text / heading bars</div>
+        <div class="k"><span class="sw card"></span> Card / content block</div>
+        <div class="k"><span class="sw dash"></span> Grouped / optional</div>
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+var NOTES={
+ 1:{t:'<b>Sticky top nav.</b> Logo left; primary links (Tapes, Films, About, Quality &amp; Certifications, Markets ▾); language selector + Contact. <span>Collapses to ☰ on tablet/mobile.</span>'},
+ 2:{t:'<b>Breadcrumb.</b> Home › Quality &amp; Certifications, with page tagline.'},
+ 3:{t:'<b>Hero.</b> Eyebrow, large H1 “Manufactured to recognised quality standards”, one-line intro naming ISO 9001/45001/14001, UL, BIS. <span>Text-only, no image.</span>'},
+ 4:{t:'<b>Certification card grid.</b> One card per standard — ISO 9001:2015, 45001:2018, 14001:2015, UL, BIS · IS 7809. Each: “Certified” badge, name, scope, “certificate on request”. <span>3-up → 2-up → 1-up.</span>'},
+ 5:{t:'<b>Documentation block.</b> “Documented &amp; audit-ready” — Datasheets (per product), Test reports (per batch), Samples (on request).'},
+ 6:{t:'<b>CTA band.</b> “Need documentation?” → primary <b>Request Documents</b> + secondary Knowledge Center link.'},
+ 7:{t:'<b>Mega-footer.</b> Company blurb + Contact CTA, link columns (Products, Markets, Company, Resources), legal row + “It’s Power-Strong”.'}
+};
+var device=document.getElementById('device');
+var notelist=document.getElementById('notelist');
+var sel=null;
+
+// build note list
+Object.keys(NOTES).forEach(function(k){
+  var b=document.createElement('button');b.className='note';b.setAttribute('data-p',k);
+  b.innerHTML='<span class="n">'+k+'</span><span class="txt">'+NOTES[k].t+'</span>';
+  b.addEventListener('click',function(){select(k);});
+  notelist.appendChild(b);
+});
+
+function select(k){
+  sel=k;
+  document.querySelectorAll('.pin').forEach(function(p){p.classList.toggle('sel',p.getAttribute('data-p')===k);});
+  document.querySelectorAll('.note').forEach(function(n){n.classList.toggle('sel',n.getAttribute('data-p')===k);});
+  document.querySelectorAll('.b').forEach(function(b){b.classList.remove('hl');});
+  var pin=document.querySelector('.pin[data-p="'+k+'"]');
+  if(pin){var blk=pin.closest('.b'); if(blk){blk.classList.add('hl'); blk.scrollIntoView({behavior:'smooth',block:'center'});}}
+}
+document.querySelectorAll('.pin').forEach(function(p){p.addEventListener('click',function(){select(p.getAttribute('data-p'));});});
+
+// device toggle
+document.getElementById('devseg').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#devseg button').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');
+  device.classList.remove('desktop','tablet','mobile');
+  device.classList.add(b.getAttribute('data-dev'));
+});
+
+// annotations toggle
+var at=document.getElementById('annoToggle');
+at.addEventListener('click',function(){
+  var on=at.classList.toggle('on');
+  device.classList.toggle('show-anno',on);
+  if(!on){ document.querySelectorAll('.b').forEach(function(b){b.classList.remove('hl');});
+    document.querySelectorAll('.note,.pin').forEach(function(n){n.classList.remove('sel');}); sel=null; }
+});
+</script>
